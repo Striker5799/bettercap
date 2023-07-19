@@ -65,7 +65,7 @@ func NewBLEDevice(p gatt.Peripheral, a *gatt.Advertisement, rssi int) *BLEDevice
 
 func (d *BLEDevice) Name() string {
 	// get the name if it's being set during services enumeration via 'Device Name'
-	name = d.DeviceName
+	name := d.DeviceName
 	if name == "" {
 		// get the name from the device
 		name = d.Device.Name()
