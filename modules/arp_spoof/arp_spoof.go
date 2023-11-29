@@ -8,7 +8,7 @@ import (
 	"time"
 
 	"github.com/jayofelony/bettercap/network"
-	"github.com/bjayofelony/bettercap/packets"
+	"github.com/jayofelony/bettercap/packets"
 	"github.com/jayofelony/bettercap/session"
 
 	"github.com/malfunkt/iprange"
