@@ -4,7 +4,7 @@ PKG_NAME:=bettercap
 PKG_VERSION:=2.28
 PKG_RELEASE:=2
 
-GO_PKG:=github.com/bettercap/bettercap
+GO_PKG:=github.com/jayofelony/bettercap
 
 PKG_SOURCE:=$(PKG_NAME)-$(PKG_VERSION).tar.gz
 PKG_SOURCE_URL:=https://codeload.github.com/bettercap/bettercap/tar.gz/v${PKG_VERSION}?

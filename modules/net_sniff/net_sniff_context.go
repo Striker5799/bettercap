@@ -5,9 +5,9 @@ import (
 	"regexp"
 	"time"
 
-	"github.com/bettercap/bettercap/log"
-	"github.com/bettercap/bettercap/network"
-	"github.com/bettercap/bettercap/session"
+	"github.com/jayofelony/bettercap/log"
+	"github.com/jayofelony/bettercap/network"
+	"github.com/jayofelony/bettercap/session"
 
 	"github.com/google/gopacket/pcap"
 	"github.com/google/gopacket/pcapgo"

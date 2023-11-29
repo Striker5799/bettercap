@@ -4,7 +4,7 @@ import (
 	"fmt"
 	"time"
 
-	"github.com/bettercap/bettercap/session"
+	"github.com/jayofelony/bettercap/session"
 )
 
 type SniffData map[string]interface{}
