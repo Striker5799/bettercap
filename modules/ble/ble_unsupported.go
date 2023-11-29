@@ -3,7 +3,7 @@
 package ble
 
 import (
-	"github.com/bettercap/bettercap/session"
+	"github.com/jayofelony/bettercap/session"
 )
 
 type BLERecon struct {

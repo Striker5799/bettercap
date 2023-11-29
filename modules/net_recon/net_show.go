@@ -2,13 +2,13 @@ package net_recon
 
 import (
 	"fmt"
-	"github.com/bettercap/bettercap/modules/syn_scan"
+	"github.com/jayofelony/bettercap/modules/syn_scan"
 	"sort"
 	"strings"
 	"time"
 
-	"github.com/bettercap/bettercap/network"
-	"github.com/bettercap/bettercap/packets"
+	"github.com/jayofelony/bettercap/network"
+	"github.com/jayofelony/bettercap/packets"
 
 	"github.com/dustin/go-humanize"
 

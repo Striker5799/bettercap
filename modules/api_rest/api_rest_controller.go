@@ -11,7 +11,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/bettercap/bettercap/session"
+	"github.com/jayofelony/bettercap/session"
 
 	"github.com/gorilla/mux"
 )

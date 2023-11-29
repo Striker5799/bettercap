@@ -16,9 +16,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/bettercap/bettercap/firewall"
-	"github.com/bettercap/bettercap/session"
-	btls "github.com/bettercap/bettercap/tls"
+	"github.com/jayofelony/bettercap/firewall"
+	"github.com/jayofelony/bettercap/session"
+	btls "github.com/jayofelony/bettercap/tls"
 
 	"github.com/elazarl/goproxy"
 	"github.com/inconshreveable/go-vhost"

@@ -7,7 +7,7 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/bettercap/bettercap/core"
+	"github.com/jayofelony/bettercap/core"
 
 	"github.com/evilsocket/islazy/data"
 	"github.com/evilsocket/islazy/str"

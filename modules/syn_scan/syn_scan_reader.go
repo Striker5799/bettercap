@@ -3,7 +3,7 @@ package syn_scan
 import (
 	"sync/atomic"
 
-	"github.com/bettercap/bettercap/network"
+	"github.com/jayofelony/bettercap/network"
 
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/layers"

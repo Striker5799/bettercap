@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/bettercap/bettercap/network"
+	"github.com/jayofelony/bettercap/network"
 	"github.com/bettercap/gatt"
 
 	"github.com/evilsocket/islazy/tui"

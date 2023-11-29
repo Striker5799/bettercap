@@ -11,8 +11,8 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/bettercap/bettercap/modules/net_sniff"
-	"github.com/bettercap/bettercap/session"
+	"github.com/jayofelony/bettercap/modules/net_sniff"
+	"github.com/jayofelony/bettercap/session"
 
 	"github.com/evilsocket/islazy/tui"
 )

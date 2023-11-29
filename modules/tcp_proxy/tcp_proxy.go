@@ -6,8 +6,8 @@ import (
 	"net"
 	"sync"
 
-	"github.com/bettercap/bettercap/firewall"
-	"github.com/bettercap/bettercap/session"
+	"github.com/jayofelony/bettercap/firewall"
+	"github.com/jayofelony/bettercap/session"
 
 	"github.com/robertkrimen/otto"
 )

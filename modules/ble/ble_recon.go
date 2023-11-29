@@ -8,9 +8,9 @@ import (
 	golog "log"
 	"time"
 
-	"github.com/bettercap/bettercap/modules/utils"
-	"github.com/bettercap/bettercap/network"
-	"github.com/bettercap/bettercap/session"
+	"github.com/jayofelony/bettercap/modules/utils"
+	"github.com/jayofelony/bettercap/network"
+	"github.com/jayofelony/bettercap/session"
 
 	"github.com/bettercap/gatt"
 

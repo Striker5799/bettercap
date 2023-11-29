@@ -6,7 +6,7 @@ import (
 	"sort"
 	"time"
 
-	"github.com/bettercap/bettercap/network"
+	"github.com/jayofelony/bettercap/network"
 
 	"github.com/evilsocket/islazy/ops"
 	"github.com/evilsocket/islazy/tui"

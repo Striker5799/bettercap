@@ -8,8 +8,8 @@ import (
 	"strings"
 	"syscall"
 
-	"github.com/bettercap/bettercap/core"
-	"github.com/bettercap/bettercap/session"
+	"github.com/jayofelony/bettercap/core"
+	"github.com/jayofelony/bettercap/session"
 
 	"github.com/chifflier/nfqueue-go/nfqueue"
 

@@ -1,7 +1,7 @@
 package net_sniff
 
 import (
-	"github.com/bettercap/bettercap/packets"
+	"github.com/jayofelony/bettercap/packets"
 	"net"
 
 	"github.com/google/gopacket"

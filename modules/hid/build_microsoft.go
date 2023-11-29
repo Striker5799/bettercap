@@ -3,7 +3,7 @@ package hid
 import (
 	"fmt"
 
-	"github.com/bettercap/bettercap/network"
+	"github.com/jayofelony/bettercap/network"
 )
 
 type MicrosoftBuilder struct {

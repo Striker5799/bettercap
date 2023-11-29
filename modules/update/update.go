@@ -6,8 +6,8 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/bettercap/bettercap/core"
-	"github.com/bettercap/bettercap/session"
+	"github.com/jayofelony/bettercap/core"
+	"github.com/jayofelony/bettercap/session"
 
 	"github.com/google/go-github/github"
 

@@ -3,11 +3,11 @@ package wifi
 import (
 	"bytes"
 	"fmt"
-	"github.com/bettercap/bettercap/network"
+	"github.com/jayofelony/bettercap/network"
 	"net"
 	"path"
 
-	"github.com/bettercap/bettercap/packets"
+	"github.com/jayofelony/bettercap/packets"
 
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/layers"

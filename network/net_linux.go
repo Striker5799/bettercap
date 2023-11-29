@@ -8,7 +8,7 @@ import (
 	"strconv"
 	"strings"
 
-	"github.com/bettercap/bettercap/core"
+	"github.com/jayofelony/bettercap/core"
 )
 
 // see Windows version to understand why ....

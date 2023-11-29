@@ -6,7 +6,7 @@ import (
 	"regexp"
 	"strconv"
 
-	"github.com/bettercap/bettercap/core"
+	"github.com/jayofelony/bettercap/core"
 
 	"github.com/evilsocket/islazy/str"
 )

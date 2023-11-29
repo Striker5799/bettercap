@@ -1,7 +1,7 @@
 package net_sniff
 
 import (
-	"github.com/bettercap/bettercap/log"
+	"github.com/jayofelony/bettercap/log"
 	"time"
 )
 

@@ -7,8 +7,8 @@ import (
 	"sync"
 	"time"
 
-	"github.com/bettercap/bettercap/session"
-	"github.com/bettercap/bettercap/tls"
+	"github.com/jayofelony/bettercap/session"
+	"github.com/jayofelony/bettercap/tls"
 
 	"github.com/bettercap/recording"
 

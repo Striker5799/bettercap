@@ -9,8 +9,8 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/bettercap/bettercap/core"
-	"github.com/bettercap/bettercap/network"
+	"github.com/jayofelony/bettercap/core"
+	"github.com/jayofelony/bettercap/network"
 
 	"github.com/evilsocket/islazy/str"
 )

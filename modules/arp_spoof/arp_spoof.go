@@ -7,9 +7,9 @@ import (
 	"sync"
 	"time"
 
-	"github.com/bettercap/bettercap/network"
-	"github.com/bettercap/bettercap/packets"
-	"github.com/bettercap/bettercap/session"
+	"github.com/jayofelony/bettercap/network"
+	"github.com/bjayofelony/bettercap/packets"
+	"github.com/jayofelony/bettercap/session"
 
 	"github.com/malfunkt/iprange"
 )

@@ -4,8 +4,8 @@ import (
 	"fmt"
 	"net"
 
-	"github.com/bettercap/bettercap/log"
-	"github.com/bettercap/bettercap/packets"
+	"github.com/jayofelony/bettercap/log"
+	"github.com/jayofelony/bettercap/packets"
 
 	"github.com/google/gopacket"
 	"github.com/google/gopacket/layers"

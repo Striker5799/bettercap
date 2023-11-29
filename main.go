@@ -8,10 +8,10 @@ import (
 
 	"runtime"
 
-	"github.com/bettercap/bettercap/core"
-	"github.com/bettercap/bettercap/log"
-	"github.com/bettercap/bettercap/modules"
-	"github.com/bettercap/bettercap/session"
+	"github.com/jayofelony/bettercap/core"
+	"github.com/jayofelony/bettercap/log"
+	"github.com/jayofelony/bettercap/modules"
+	"github.com/jayofelony/bettercap/session"
 
 	"github.com/evilsocket/islazy/str"
 	"github.com/evilsocket/islazy/tui"
