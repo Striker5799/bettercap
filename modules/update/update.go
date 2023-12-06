@@ -9,7 +9,7 @@ import (
 	"github.com/jayofelony/bettercap/core"
 	"github.com/jayofelony/bettercap/session"
 
-	"github.com/google/go-github/github"
+	"github.com/google/go-github/v57/github"
 
 	"github.com/evilsocket/islazy/tui"
 )

@@ -15,7 +15,7 @@ require (
 	github.com/elazarl/goproxy v0.0.0-20231117061959-7cc037d33fb5
 	github.com/evilsocket/islazy v1.11.0
 	github.com/gobwas/glob v0.2.3
-	github.com/google/go-github v17.0.0+incompatible
+	github.com/google/go-github/v57 v57.0.0
 	github.com/google/gopacket v1.1.19
 	github.com/google/gousb v1.1.2
 	github.com/gorilla/mux v1.8.1
