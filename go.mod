@@ -35,10 +35,20 @@ require (
 )
 
 require (
+	github.com/antchfx/xpath v1.2.5 // indirect
+	github.com/chzyer/logex v1.2.1 // indirect
 	github.com/elazarl/goproxy/ext v0.0.0-20231117061959-7cc037d33fb5 // indirect
-	github.com/google/go-cmp v0.6.0 // indirect
+	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/kr/binarydist v0.1.0 // indirect
+	github.com/mattn/go-colorable v0.1.13 // indirect
 	github.com/mattn/go-isatty v0.0.20 // indirect
+	github.com/mgutz/ansi v0.0.0-20200706080929-d51e80ef957d // indirect
+	github.com/mgutz/logxi v0.0.0-20161027140823-aebf8a7d67ab // indirect
 	github.com/pkg/errors v0.9.1 // indirect
+	golang.org/x/mod v0.14.0 // indirect
+	golang.org/x/sys v0.15.0 // indirect
+	golang.org/x/text v0.14.0 // indirect
+	golang.org/x/tools v0.16.0 // indirect
+	gopkg.in/sourcemap.v1 v1.0.5 // indirect
 )

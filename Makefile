@@ -1,12 +1,13 @@
-TARGET   ?= bettercap
+TARGET   ?= build/bettercap
 PACKAGES ?= core firewall log modules network packets session tls
 PREFIX   ?= /usr/local
 GO       ?= go
+VERSION := $(shell sed -n 's/Version[[:space:]]*=[[:space:]]*"\([0-9.]\+\)"/\1/p' core/banner.go)
 
 all: build
 
 build: resources
-	$(GOFLAGS) $(GO) build -o $(TARGET) .
+	$(GO) build -o $(TARGET) .
 
 build_with_race_detector: resources
 	$(GOFLAGS) $(GO) build -race -o $(TARGET) .
@@ -18,7 +19,7 @@ network/manuf.go:
 
 install:
 	@mkdir -p $(DESTDIR)$(PREFIX)/share/bettercap/caplets
-	@cp bettercap $(DESTDIR)$(PREFIX)/bin/
+	@cp $(TARGET) $(DESTDIR)$(PREFIX)/bin/
 
 docker:
 	@docker build -t bettercap:latest .
@@ -36,7 +37,6 @@ fmt:
 	$(GO) fmt -s -w $(PACKAGES)
 
 clean:
-	$(RM) $(TARGET)
-	$(RM) -r build
+	@rm -rf build
 
 .PHONY: all build build_with_race_detector resources install docker test html_coverage benchmark fmt clean
