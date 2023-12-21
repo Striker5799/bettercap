@@ -27,7 +27,7 @@ require (
 	github.com/mdlayher/dhcp6 v0.0.0-20190311162359-2a67805d7d0b
 	github.com/miekg/dns v1.1.57
 	github.com/mitchellh/go-homedir v1.1.0
-	github.com/robertkrimen/otto v0.2.1
+	github.com/robertkrimen/otto v0.3.0
 	github.com/stratoberry/go-gpsd v1.3.0
 	github.com/tarm/serial v0.0.0-20180830185346-98f6abe2eb07
 	github.com/thoj/go-ircevent v0.0.0-20210723090443-73e444401d64
