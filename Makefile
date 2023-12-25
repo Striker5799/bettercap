@@ -42,12 +42,12 @@ release_files: clean
     # shellcheck disable=SC2086
 	@mkdir build
 	@echo building for linux/amd64 ...
-	@CGO_ENABLED=1 GOARCH=amd64 GOOS=linux $(MAKE) build
+	@CGO_ENABLED=1 CC=x86_64-linux-gnu-gcc GOARCH=amd64 GOOS=linux $(MAKE) build
 	@openssl dgst -sha256 "build/bettercap" > "build/bettercap-amd64.sha256"
 	@zip -j "build/bettercap-$(VERSION)-amd64.zip" build/bettercap build/bettercap-amd64.sha256 > /dev/null
 	@rm -rf build/bettercap build/bettercap-amd64.sha256
 	@echo building for linux/armhf ...
-	@CGO_ENABLED=1 CC=arm-linux-gnueabihf-gcc GOARM=6 GOARCH=arm GOOS=linux $(MAKE) build
+	@CGO_ENABLED=1 CC=arm-linux-gnueabi-gcc GOARM=6 GOARCH=arm GOOS=linux $(MAKE) build
 	@openssl dgst -sha256 "build/bettercap" > "build/bettercap-armhf.sha256"
 	@zip -j "build/bettercap-$(VERSION)-armhf.zip" build/bettercap build/bettercap-armhf.sha256 > /dev/null
 	@rm -rf build/pwngrid build/bettercap-armhf.sha256
