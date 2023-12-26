@@ -48,9 +48,9 @@ release_files: clean
 	@rm -rf build/bettercap build/bettercap-amd64.sha256
 	@echo building for linux/armhf ...
 	@CGO_ENABLED=1 CC=arm-linux-gnueabi-gcc GOARM=6 GOARCH=arm GOOS=linux $(MAKE) build
-	@openssl dgst -sha256 "build/bettercap" > "build/bettercap-armhf.sha256"
-	@zip -j "build/bettercap-$(VERSION)-armhf.zip" build/bettercap build/bettercap-armhf.sha256 > /dev/null
-	@rm -rf build/pwngrid build/bettercap-armhf.sha256
+	@openssl dgst -sha256 "build/bettercap" > "build/bettercap-armv6l.sha256"
+	@zip -j "build/bettercap-$(VERSION)-armv6l.zip" build/bettercap build/bettercap-armv6l.sha256 > /dev/null
+	@rm -rf build/pwngrid build/bettercap-armv6l.sha256
 	@echo building for linux/aarch64 ...
 	@CGO_ENABLED=1 CC=aarch64-linux-gnu-gcc GOARCH=arm64 GOOS=linux $(MAKE) build
 	@openssl dgst -sha256 "build/bettercap" > "build/bettercap-aarch64.sha256"
