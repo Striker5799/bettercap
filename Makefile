@@ -38,6 +38,7 @@ fmt:
 clean:
 	@rm -rf build
 
+# not working..
 release_files: clean
     # shellcheck disable=SC2086
 	@mkdir build
