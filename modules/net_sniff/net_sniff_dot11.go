@@ -1,8 +1,8 @@
 package net_sniff
 
 import (
-	"github.com/gopacket/gopacket"
-	"github.com/gopacket/gopacket/layers"
+	"github.com/google/gopacket"
+	"github.com/google/gopacket/layers"
 )
 
 func onDOT11(radiotap *layers.RadioTap, dot11 *layers.Dot11, pkt gopacket.Packet, verbose bool) {

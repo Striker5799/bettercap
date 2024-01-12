@@ -5,8 +5,8 @@ import (
 
 	"github.com/jayofelony/bettercap/network"
 
-	"github.com/gopacket/gopacket"
-	"github.com/gopacket/gopacket/layers"
+	"github.com/google/gopacket"
+	"github.com/google/gopacket/layers"
 
 	"github.com/evilsocket/islazy/async"
 )
@@ -27,6 +27,8 @@ func (mod *SynScanner) onPacket(pkt gopacket.Packet) {
 	var ip4 layers.IPv4
 	var ip6 layers.IPv6
 	var tcp layers.TCP
+
+
 
 	isIPv6 := false
 	foundLayerTypes := []gopacket.LayerType{}

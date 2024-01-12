@@ -16,8 +16,8 @@ require (
 	github.com/evilsocket/islazy v1.11.0
 	github.com/gobwas/glob v0.2.3
 	github.com/google/go-github/v57 v57.0.0
+	github.com/google/gopacket v1.1.19
 	github.com/google/gousb v1.1.2
-	github.com/gopacket/gopacket v1.2.0
 	github.com/gorilla/mux v1.8.1
 	github.com/gorilla/websocket v1.5.1
 	github.com/hashicorp/mdns v1.0.5
@@ -49,6 +49,6 @@ require (
 	golang.org/x/mod v0.14.0 // indirect
 	golang.org/x/sys v0.16.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
-	golang.org/x/tools v0.17.0 // indirect
+	golang.org/x/tools v0.16.1 // indirect
 	gopkg.in/sourcemap.v1 v1.0.5 // indirect
 )

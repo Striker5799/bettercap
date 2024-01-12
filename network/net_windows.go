@@ -5,7 +5,7 @@ import (
 	"net"
 	"strings"
 
-	"github.com/gopacket/gopacket/pcap"
+	"github.com/google/gopacket/pcap"
 )
 
 /*

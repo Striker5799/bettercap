@@ -7,7 +7,7 @@ import (
 	"github.com/jayofelony/bettercap/session"
 
 	"github.com/evilsocket/islazy/tui"
-	"github.com/gopacket/gopacket/layers"
+	"github.com/google/gopacket/layers"
 )
 
 func vIP(ip net.IP) string {

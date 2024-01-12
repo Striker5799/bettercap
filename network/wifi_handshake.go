@@ -3,8 +3,8 @@ package network
 import (
 	"sync"
 
-	"github.com/gopacket/gopacket"
-	"github.com/gopacket/gopacket/layers"
+	"github.com/google/gopacket"
+	"github.com/google/gopacket/layers"
 )
 
 type Handshake struct {

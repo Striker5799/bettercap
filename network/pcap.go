@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/evilsocket/islazy/tui"
-	"github.com/gopacket/gopacket/pcap"
+	"github.com/google/gopacket/pcap"
 )
 
 const (

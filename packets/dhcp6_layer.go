@@ -1,8 +1,8 @@
 package packets
 
 import (
-	"github.com/gopacket/gopacket"
-	"github.com/gopacket/gopacket/layers"
+	"github.com/google/gopacket"
+	"github.com/google/gopacket/layers"
 )
 
 type DHCPv6Layer struct {
