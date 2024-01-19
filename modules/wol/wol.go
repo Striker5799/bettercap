@@ -8,7 +8,7 @@ import (
 	"github.com/jayofelony/bettercap/packets"
 	"github.com/jayofelony/bettercap/session"
 
-	"github.com/google/gopacket/layers"
+	"github.com/gopacket/gopacket/layers"
 
 	"github.com/evilsocket/islazy/str"
 	"github.com/evilsocket/islazy/tui"

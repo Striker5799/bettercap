@@ -16,8 +16,8 @@ require (
 	github.com/evilsocket/islazy v1.11.0
 	github.com/gobwas/glob v0.2.3
 	github.com/google/go-github/v57 v57.0.0
-	github.com/google/gopacket v1.1.19
 	github.com/google/gousb v1.1.2
+	github.com/gopacket/gopacket v1.2.0
 	github.com/gorilla/mux v1.8.1
 	github.com/gorilla/websocket v1.5.1
 	github.com/hashicorp/mdns v1.0.5
@@ -25,7 +25,7 @@ require (
 	github.com/jpillora/go-tld v1.2.1
 	github.com/malfunkt/iprange v0.9.0
 	github.com/mdlayher/dhcp6 v0.0.0-20190311162359-2a67805d7d0b
-	github.com/miekg/dns v1.1.57
+	github.com/miekg/dns v1.1.58
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/robertkrimen/otto v0.3.0
 	github.com/stratoberry/go-gpsd v1.3.0
@@ -49,6 +49,6 @@ require (
 	golang.org/x/mod v0.14.0 // indirect
 	golang.org/x/sys v0.16.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
-	golang.org/x/tools v0.16.1 // indirect
+	golang.org/x/tools v0.17.0 // indirect
 	gopkg.in/sourcemap.v1 v1.0.5 // indirect
 )

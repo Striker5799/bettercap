@@ -12,9 +12,9 @@ import (
 	"github.com/jayofelony/bettercap/packets"
 	"github.com/jayofelony/bettercap/session"
 
-	"github.com/google/gopacket"
-	"github.com/google/gopacket/layers"
-	"github.com/google/gopacket/pcap"
+	"github.com/gopacket/gopacket"
+	"github.com/gopacket/gopacket/layers"
+	"github.com/gopacket/gopacket/pcap"
 
 	"github.com/evilsocket/islazy/tui"
 )

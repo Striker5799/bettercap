@@ -2,8 +2,8 @@ package core
 
 const (
 	Name    = "bettercap"
-	Version = "2.32.2"
+	Version = "2.32.3"
 	Author  = "Simone 'evilsocket' Margaritelli"
-	Editor = "Jeroen 'Jayfelony' Oudshoorn"
+	Editor  = "Jeroen 'Jayfelony' Oudshoorn"
 	Website = "https://bettercap.org/"
 )
