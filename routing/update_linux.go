@@ -4,8 +4,8 @@ import (
 	"regexp"
 	"strings"
 
-	"github.com/jayofelony/bettercap/core"
 	"github.com/evilsocket/islazy/str"
+	"github.com/jayofelony/bettercap/core"
 )
 
 var (
@@ -32,6 +32,11 @@ func update() ([]Route, error) {
 
 			if parts[0] == "Destination" {
 				routeHeadings = parts
+				continue
+			}
+
+			// skip line if no route headings found yet
+			if routeHeadings == nil {
 				continue
 			}
 
