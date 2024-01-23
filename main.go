@@ -34,7 +34,7 @@ func main() {
 	}
 
 	if *sess.Options.PrintVersion {
-		fmt.Printf("%s v%s (built for %s %s with %s)\n", core.Name, core.Version, runtime.GOOS, runtime.GOARCH, runtime.Version())
+		fmt.Printf("v%s", core.Version)
 		return
 	}
 
