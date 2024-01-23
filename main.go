@@ -34,7 +34,7 @@ func main() {
 	}
 
 	if *sess.Options.PrintVersion {
-		fmt.Printf("v%s", core.Version)
+		fmt.Printf("%s", core.Version)
 		return
 	}
 
