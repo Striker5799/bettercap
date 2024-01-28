@@ -233,7 +233,7 @@ func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error
 	}
 	defer fp.Close()
 
-	writer, err := pcapgo.NewNgWriter(fp, linkType)
+	writer, err := pcapgo.NewNgWriter(fp, layers.LinkTypeEthernet)
 	if err != nil {
 		return err
 	}
