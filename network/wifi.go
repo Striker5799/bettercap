@@ -2,7 +2,6 @@ package network
 
 import (
 	"encoding/json"
-	"net"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -219,7 +218,7 @@ func (w *WiFi) NumHandshakes() int {
 	return sum
 }
 
-func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType, iface net.Interface) error {
+func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error {
 	// check if folder exists first
 	dirName := filepath.Dir(fileName)
 	if _, err := os.Stat(dirName); err != nil {
@@ -234,13 +233,13 @@ func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType, iface
 	}
 	defer fp.Close()
 
-	pcapgo.DefaultNgInterface.Name = getInterfaceName(iface)
+	pcapgo.DefaultNgInterface.Name = "wlan0mon"
 
 	writer, err := pcapgo.NewNgWriter(fp, linkType)
 	if err != nil {
 		return err
 	}
-	writer.Flush()
+	defer writer.Flush()
 
 	w.RLock()
 	defer w.RUnlock()
