@@ -13,6 +13,7 @@ import (
 	"github.com/gopacket/gopacket/pcapgo"
 
 	"github.com/evilsocket/islazy/data"
+	"github.com/evilsocket/islazy/fs"
 )
 
 func Dot11Freq2Chan(freq int) int {
@@ -227,17 +228,20 @@ func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error
 		}
 	}
 
+	doHead := !fs.Exists(fileName)
 	fp, err := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_RDWR, 0666)
 	if err != nil {
 		return err
 	}
 	defer fp.Close()
 
-	writer, err := pcapgo.NewNgWriter(fp, linkType)
-	if err != nil {
-		return err
+	writer := pcapgo.NewWriter(fp)
+
+	if doHead {
+		if err = writer.WriteFileHeader(65536, linkType); err != nil {
+			return err
+		}
 	}
-	writer.Flush()
 
 	w.RLock()
 	defer w.RUnlock()

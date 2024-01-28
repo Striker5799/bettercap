@@ -358,7 +358,7 @@ func NewWiFiModule(s *session.Session) *WiFiModule {
 		}))
 
 	mod.AddParam(session.NewStringParameter("wifi.handshakes.file",
-		"~/bettercap-wifi-handshakes.pcapng",
+		"~/bettercap-wifi-handshakes.pcap",
 		"",
 		"File path of the pcap file to save handshakes to."))
 
