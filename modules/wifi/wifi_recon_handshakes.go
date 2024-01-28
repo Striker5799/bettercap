@@ -177,7 +177,7 @@ func (mod *WiFiModule) discoverHandshakes(radiotap *layers.RadioTap, dot11 *laye
 
 			shakesFileName := mod.shakesFile
 			if mod.shakesAggregate == false {
-				shakesFileName = path.Join(shakesFileName, fmt.Sprintf("%s.pcapng", targetAP.PathFriendlyName()))
+				shakesFileName = path.Join(shakesFileName, fmt.Sprintf("%s.pcap", targetAP.PathFriendlyName()))
 			}
 			if shakesFileName != "" {
 				mod.Debug("(aggregate %v) saving handshake frames to %s", mod.shakesAggregate, shakesFileName)
