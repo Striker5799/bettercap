@@ -233,7 +233,8 @@ func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error
 	}
 	defer fp.Close()
 
-	pcapgo.DefaultNgInterface.Name = "wlan0mon"
+	ifName := w.iface.Name()
+	pcapgo.DefaultNgInterface.Name = ifName
 
 	writer, err := pcapgo.NewNgWriter(fp, linkType)
 	if err != nil {
