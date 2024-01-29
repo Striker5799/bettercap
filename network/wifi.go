@@ -242,9 +242,6 @@ func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error
 	if err != nil {
 		return err
 	}
-	if err != nil {
-		return err
-	}
 	defer writer.Flush()
 
 	w.RLock()
