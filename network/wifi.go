@@ -2,7 +2,6 @@ package network
 
 import (
 	"encoding/json"
-	"fmt"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -242,19 +241,20 @@ func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error
 
 	w.RLock()
 	defer w.RUnlock()
+	writer.AddInterface(pcapgo.NgInterface{
+		Name:                w.iface.Name(),
+		SnapLength:          0,
+		TimestampResolution: 9,
+	})
 
 	for _, ap := range w.aps {
+
 		for _, station := range ap.Clients() {
 			// if half (which includes also complete) or has pmkid
 			if station.Handshake.Any() {
 				err = nil
 				station.Handshake.EachUnsavedPacket(func(pkt gopacket.Packet) {
 					if err == nil {
-						writer.AddInterface(pcapgo.NgInterface{
-							Name:                fmt.Sprintf(w.iface.Name(), ap.Index),
-							SnapLength:          0, //unlimited
-							TimestampResolution: 9,
-						})
 						err = writer.WritePacket(pkt.Metadata().CaptureInfo, pkt.Data())
 					}
 				})
