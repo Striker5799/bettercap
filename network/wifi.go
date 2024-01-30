@@ -2,7 +2,6 @@ package network
 
 import (
 	"encoding/json"
-	"math"
 	"net"
 	"os"
 	"path/filepath"
@@ -247,9 +246,10 @@ func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error
 	}
 	for _, iface := range netIfs {
 		if _, err = writer.AddInterface(pcapgo.NgInterface{
-			Name:       iface.Name,
-			LinkType:   linkType,
-			SnapLength: uint32(math.MaxUint16),
+			Name:                iface.Name,
+			LinkType:            linkType,
+			SnapLength:          0, //unlimited
+			TimestampResolution: 9,
 		}); err != nil {
 			return err
 		}
