@@ -247,7 +247,7 @@ func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error
 	for _, iface := range netIfs {
 		if _, err = writer.AddInterface(pcapgo.NgInterface{
 			Name:                iface.Name,
-			LinkType:            layers.LinkTypeEthernet,
+			LinkType:            linkType,
 			SnapLength:          0, //unlimited
 			TimestampResolution: 9,
 		}); err != nil {
