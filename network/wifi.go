@@ -244,17 +244,17 @@ func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error
 	defer w.RUnlock()
 
 	for _, ap := range w.aps {
-		writer.AddInterface(pcapgo.NgInterface{
-			Name:                fmt.Sprintf(w.iface.Name(), ap.Index), // just a dummy name
-			SnapLength:          0,                                     //unlimited
-			TimestampResolution: 9,
-		})
 		for _, station := range ap.Clients() {
 			// if half (which includes also complete) or has pmkid
 			if station.Handshake.Any() {
 				err = nil
 				station.Handshake.EachUnsavedPacket(func(pkt gopacket.Packet) {
 					if err == nil {
+						writer.AddInterface(pcapgo.NgInterface{
+							Name:                fmt.Sprintf(w.iface.Name(), ap.Index),
+							SnapLength:          0, //unlimited
+							TimestampResolution: 9,
+						})
 						err = writer.WritePacket(pkt.Metadata().CaptureInfo, pkt.Data())
 					}
 				})
