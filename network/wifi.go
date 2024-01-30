@@ -5,7 +5,6 @@ import (
 	"fmt"
 	"os"
 	"path/filepath"
-	"runtime"
 	"strconv"
 	"sync"
 	"time"
@@ -253,12 +252,6 @@ func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error
 	defer w.RUnlock()
 
 	for _, ap := range w.aps {
-		writer.AddInterface(pcapgo.NgInterface{
-			Name:                w.iface.Name(),
-			OS:                  runtime.GOOS,
-			SnapLength:          0,
-			TimestampResolution: 9,
-		})
 		for _, station := range ap.Clients() {
 			// if half (which includes also complete) or has pmkid
 			if station.Handshake.Any() {
