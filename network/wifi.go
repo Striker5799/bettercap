@@ -2,7 +2,6 @@ package network
 
 import (
 	"encoding/json"
-	"net"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -239,21 +238,6 @@ func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error
 		return err
 	}
 	defer writer.Flush()
-
-	netIfs, err := net.Interfaces()
-	if err != nil {
-		return err
-	}
-	for _, iface := range netIfs {
-		if _, err = writer.AddInterface(pcapgo.NgInterface{
-			Name:                iface.Name,
-			LinkType:            linkType,
-			SnapLength:          0, //unlimited
-			TimestampResolution: 9,
-		}); err != nil {
-			return err
-		}
-	}
 
 	w.RLock()
 	defer w.RUnlock()
