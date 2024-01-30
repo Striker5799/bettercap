@@ -242,8 +242,8 @@ func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error
 
 	for _, ap := range w.aps {
 		writer.AddInterface(pcapgo.NgInterface{
-			Name:                fmt.Sprintf(w.iface.Name()+"_%d", ap.Index), // just a dummy name
-			SnapLength:          0,                                           //unlimited
+			Name:                fmt.Sprintf(w.iface.Name(), ap.Index), // just a dummy name
+			SnapLength:          0,                                     //unlimited
 			TimestampResolution: 9,
 		})
 	}
