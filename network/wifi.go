@@ -2,8 +2,10 @@ package network
 
 import (
 	"encoding/json"
+	"fmt"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strconv"
 	"sync"
 	"time"
@@ -239,16 +241,24 @@ func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error
 	}
 	defer writer.Flush()
 
+	for _, ap := range w.aps {
+		writer.AddInterface(pcapgo.NgInterface{
+			Name:                fmt.Sprintf(w.iface.Name()+"_%d", ap.Index), // just a dummy name
+			SnapLength:          0,                                           //unlimited
+			TimestampResolution: 9,
+		})
+	}
+
 	w.RLock()
 	defer w.RUnlock()
-	writer.AddInterface(pcapgo.NgInterface{
-		Name:                w.iface.Name(),
-		SnapLength:          0,
-		TimestampResolution: 9,
-	})
 
 	for _, ap := range w.aps {
-
+		writer.AddInterface(pcapgo.NgInterface{
+			Name:                w.iface.Name(),
+			OS:                  runtime.GOOS,
+			SnapLength:          0,
+			TimestampResolution: 9,
+		})
 		for _, station := range ap.Clients() {
 			// if half (which includes also complete) or has pmkid
 			if station.Handshake.Any() {
