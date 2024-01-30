@@ -2,18 +2,17 @@ package network
 
 import (
 	"encoding/json"
-	"net"
+	"github.com/gopacket/gopacket/pcapgo"
 	"os"
 	"path/filepath"
+	"runtime"
 	"strconv"
 	"sync"
 	"time"
 
+	"github.com/evilsocket/islazy/data"
 	"github.com/gopacket/gopacket"
 	"github.com/gopacket/gopacket/layers"
-	"github.com/gopacket/gopacket/pcapgo"
-
-	"github.com/evilsocket/islazy/data"
 )
 
 func Dot11Freq2Chan(freq int) int {
@@ -234,25 +233,26 @@ func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error
 	}
 	defer fp.Close()
 
-	writer, err := pcapgo.NewNgWriter(fp, linkType)
-	if err != nil {
-		return err
+	pcapOption := pcapgo.NgWriterOptions{
+		SectionInfo: pcapgo.NgSectionInfo{
+			Hardware:    "Raspberry Pi",
+			OS:          runtime.GOOS,
+			Application: "Pwnagotchi/Bettercap",
+			Comment:     "https://github.com/jayofelony/pwnagotchi-bookworm",
+		},
 	}
-	defer writer.Flush()
+	// write interface description
+	ngIface := pcapgo.NgInterface{
+		Name:       w.iface.Name(),
+		Comment:    "gopacket: https://github.com/google/gopacket",
+		Filter:     "",
+		LinkType:   linkType,
+		SnapLength: 65536,
+	}
 
-	netIfs, err := net.Interfaces()
+	writer, err := pcapgo.NewNgWriterInterface(fp, ngIface, pcapOption)
 	if err != nil {
 		return err
-	}
-	for _, iface := range netIfs {
-		if _, err = writer.AddInterface(pcapgo.NgInterface{
-			Name:                iface.Name,
-			LinkType:            linkType,
-			SnapLength:          0, //unlimited
-			TimestampResolution: 9,
-		}); err != nil {
-			return err
-		}
 	}
 
 	w.RLock()
