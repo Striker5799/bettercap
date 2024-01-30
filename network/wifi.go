@@ -3,6 +3,7 @@ package network
 import (
 	"encoding/json"
 	"github.com/gopacket/gopacket/pcapgo"
+	"math"
 	"os"
 	"path/filepath"
 	"runtime"
@@ -247,7 +248,7 @@ func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error
 		Comment:    "gopacket: https://github.com/google/gopacket",
 		Filter:     "",
 		LinkType:   linkType,
-		SnapLength: 65536,
+		SnapLength: uint32(math.MaxUint16),
 	}
 
 	writer, err := pcapgo.NewNgWriterInterface(fp, ngIface, pcapOption)
