@@ -2,7 +2,8 @@ package network
 
 import (
 	"encoding/json"
-	"fmt"
+	"math"
+	"net"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -240,12 +241,18 @@ func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error
 	}
 	defer writer.Flush()
 
-	for _, ap := range w.aps {
-		writer.AddInterface(pcapgo.NgInterface{
-			Name:                fmt.Sprintf(w.iface.Name(), ap.Index), // just a dummy name
-			SnapLength:          0,                                     //unlimited
-			TimestampResolution: 9,
-		})
+	netIfs, err := net.Interfaces()
+	if err != nil {
+		return err
+	}
+	for _, iface := range netIfs {
+		if _, err = writer.AddInterface(pcapgo.NgInterface{
+			Name:       iface.Name,
+			LinkType:   linkType,
+			SnapLength: uint32(math.MaxUint16),
+		}); err != nil {
+			return err
+		}
 	}
 
 	w.RLock()
