@@ -11,7 +11,7 @@ import (
 
 	"github.com/gopacket/gopacket"
 	"github.com/gopacket/gopacket/layers"
-	"github.com/gopacket/gopacket/pcapgo"
+	"github.com/jayofelony/bettercap/pcapgo"
 
 	"github.com/evilsocket/islazy/data"
 )
