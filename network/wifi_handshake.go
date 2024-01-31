@@ -10,28 +10,20 @@ import (
 type Handshake struct {
 	sync.RWMutex
 
-	Beacon         gopacket.Packet
-	Challenges     []gopacket.Packet
-	Responses      []gopacket.Packet
-	Confirmations  []gopacket.Packet
-	hasPMKID       bool
-	unsaved        []gopacket.Packet
-	Proberequest   []gopacket.Packet
-	Authentication []gopacket.Packet
-	Association    []gopacket.Packet
-	Reassociation  []gopacket.Packet
+	Beacon        gopacket.Packet
+	Challenges    []gopacket.Packet
+	Responses     []gopacket.Packet
+	Confirmations []gopacket.Packet
+	hasPMKID      bool
+	unsaved       []gopacket.Packet
 }
 
 func NewHandshake() *Handshake {
 	return &Handshake{
-		Challenges:     make([]gopacket.Packet, 0),
-		Responses:      make([]gopacket.Packet, 0),
-		Confirmations:  make([]gopacket.Packet, 0),
-		unsaved:        make([]gopacket.Packet, 0),
-		Proberequest:   make([]gopacket.Packet, 0),
-		Authentication: make([]gopacket.Packet, 0),
-		Association:    make([]gopacket.Packet, 0),
-		Reassociation:  make([]gopacket.Packet, 0),
+		Challenges:    make([]gopacket.Packet, 0),
+		Responses:     make([]gopacket.Packet, 0),
+		Confirmations: make([]gopacket.Packet, 0),
+		unsaved:       make([]gopacket.Packet, 0),
 	}
 }
 
@@ -82,14 +74,6 @@ func (h *Handshake) AddFrame(n int, pkt gopacket.Packet) {
 		h.Responses = append(h.Responses, pkt)
 	case 2:
 		h.Confirmations = append(h.Confirmations, pkt)
-	case 3:
-		h.Proberequest = append(h.Proberequest, pkt)
-	case 4:
-		h.Authentication = append(h.Authentication, pkt)
-	case 5:
-		h.Association = append(h.Association, pkt)
-	case 6:
-		h.Reassociation = append(h.Reassociation, pkt)
 	}
 
 	h.unsaved = append(h.unsaved, pkt)
