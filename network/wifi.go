@@ -53,7 +53,6 @@ type WiFi struct {
 	iface   *Endpoint
 	newCb   APNewCallback
 	lostCb  APLostCallback
-	writer  *pcapgo.NgWriter
 }
 
 type wifiJSON struct {
@@ -235,16 +234,11 @@ func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error
 	defer fp.Close()
 
 	pcapgo.DefaultNgInterface.Name = w.iface.Name()
-	if w.writer == nil {
-		var err error
-		pcapgo.DefaultNgInterface.Name = w.iface.Name()
-		// TODO: should be Closed/nil:ed in Clear()?
-		w.writer, err = pcapgo.NewNgWriter(fp, linkType)
-		if err != nil {
-			return err
-		}
+	writer, err := pcapgo.NewNgWriter(fp, linkType)
+	if err != nil {
+		return err
 	}
-	defer w.writer.Flush()
+	defer writer.Flush()
 
 	w.RLock()
 	defer w.RUnlock()
@@ -258,7 +252,7 @@ func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error
 					if err == nil {
 						c := pkt.Metadata().CaptureInfo
 						c.InterfaceIndex = 0
-						err = w.writer.WritePacket(c, pkt.Data())
+						err = writer.WritePacket(c, pkt.Data())
 					}
 				})
 				if err != nil {
