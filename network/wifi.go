@@ -53,7 +53,6 @@ type WiFi struct {
 	iface   *Endpoint
 	newCb   APNewCallback
 	lostCb  APLostCallback
-	writer  *pcapgo.NgWriter
 }
 
 type wifiJSON struct {
@@ -220,27 +219,26 @@ func (w *WiFi) NumHandshakes() int {
 }
 
 func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error {
-	if w.writer == nil {
-		// check if folder exists first
-		dirName := filepath.Dir(fileName)
-		if _, err := os.Stat(dirName); err != nil {
-			if err = os.MkdirAll(dirName, os.ModePerm); err != nil {
-				return err
-			}
-		}
-
-		fp, err := os.OpenFile(fileName, os.O_TRUNC|os.O_WRONLY|os.O_CREATE, 0644)
-		if err != nil {
-			return err
-		}
-		defer fp.Close()
-		pcapgo.DefaultNgInterface.Name = w.iface.Name()
-		w.writer, err = pcapgo.NewNgWriter(fp, linkType)
-		if err != nil {
+	// check if folder exists first
+	dirName := filepath.Dir(fileName)
+	if _, err := os.Stat(dirName); err != nil {
+		if err = os.MkdirAll(dirName, os.ModePerm); err != nil {
 			return err
 		}
 	}
-	defer w.writer.Flush()
+
+	fp, err := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_RDWR, 0666)
+	if err != nil {
+		return err
+	}
+	defer fp.Close()
+
+	pcapgo.DefaultNgInterface.Name = w.iface.Name()
+	writer, err := pcapgo.NewNgWriter(fp, linkType)
+	if err != nil {
+		return err
+	}
+	defer writer.Flush()
 
 	w.RLock()
 	defer w.RUnlock()
@@ -249,12 +247,12 @@ func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error
 		for _, station := range ap.Clients() {
 			// if half (which includes also complete) or has pmkid
 			if station.Handshake.Any() {
-				var err error
+				err = nil
 				station.Handshake.EachUnsavedPacket(func(pkt gopacket.Packet) {
 					if err == nil {
 						c := pkt.Metadata().CaptureInfo
 						c.InterfaceIndex = 0
-						err = w.writer.WritePacket(c, pkt.Data())
+						err = writer.WritePacket(c, pkt.Data())
 					}
 				})
 				if err != nil {
@@ -263,5 +261,6 @@ func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error
 			}
 		}
 	}
+
 	return nil
 }
