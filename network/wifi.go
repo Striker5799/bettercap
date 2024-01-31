@@ -2,7 +2,6 @@ package network
 
 import (
 	"encoding/json"
-	"github.com/evilsocket/islazy/fs"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -11,7 +10,7 @@ import (
 
 	"github.com/gopacket/gopacket"
 	"github.com/gopacket/gopacket/layers"
-	"github.com/jayofelony/bettercap/pcapgo"
+	"github.com/gopacket/gopacket/pcapgo"
 
 	"github.com/evilsocket/islazy/data"
 )
@@ -228,23 +227,18 @@ func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error
 		}
 	}
 
-	doHead := !fs.Exists(fileName)
 	fp, err := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_RDWR, 0666)
 	if err != nil {
 		return err
 	}
 	defer fp.Close()
 
-	opts := pcapgo.DefaultNgWriterOptions
-	opts.SkipHeader = !doHead
-	writer, err := pcapgo.NewNgWriterInterface(
-		fp,
-		pcapgo.DefaultNgInterface,
-		opts,
-	)
+	pcapgo.DefaultNgInterface.Name = w.iface.Name()
+	writer, err := pcapgo.NewNgWriter(fp, linkType)
 	if err != nil {
 		return err
 	}
+	defer writer.Flush()
 
 	w.RLock()
 	defer w.RUnlock()
@@ -255,9 +249,9 @@ func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error
 			if station.Handshake.Any() {
 				err = nil
 				station.Handshake.EachUnsavedPacket(func(pkt gopacket.Packet) {
-					c := pkt.Metadata().CaptureInfo
-					c.InterfaceIndex = 0
 					if err == nil {
+						c := pkt.Metadata().CaptureInfo
+						c.InterfaceIndex = 0
 						err = writer.WritePacket(c, pkt.Data())
 					}
 				})
