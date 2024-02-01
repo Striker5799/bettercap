@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"net"
+	"os"
 	"regexp"
 	"strconv"
 	"sync"
@@ -679,7 +680,23 @@ func (mod *WiFiModule) Start() error {
 		mod.reads.Add(1)
 		defer mod.reads.Done()
 
-		src := gopacket.NewPacketSource(mod.handle, mod.handle.LinkType())
+		var (
+			deviceName  string = mod.iface.Name()
+			snapshotLen int32  = 65536
+			promiscuous bool   = false
+			err         error
+			timeout     time.Duration = -1 * time.Second
+			handle      *pcap.Handle
+		)
+
+		// Open the device for capturing
+		handle, err = pcap.OpenLive(deviceName, snapshotLen, promiscuous, timeout)
+		if err != nil {
+			fmt.Printf("Error opening device %s: %v", mod.iface.Name(), err)
+			os.Exit(1)
+		}
+		defer handle.Close()
+		src := gopacket.NewPacketSource(handle, mod.handle.LinkType())
 		mod.pktSourceChan = src.Packets()
 		for packet := range mod.pktSourceChan {
 			if !mod.Running() {
