@@ -3,8 +3,6 @@ package wifi
 import (
 	"bytes"
 	"fmt"
-	"github.com/jayofelony/bettercap/network"
-	"net"
 	"path"
 
 	"github.com/jayofelony/bettercap/packets"
@@ -23,11 +21,7 @@ func allZeros(s []byte) bool {
 }
 
 func (mod *WiFiModule) discoverHandshakes(radiotap *layers.RadioTap, dot11 *layers.Dot11, packet gopacket.Packet) {
-	isEAPOL := false
-
 	if ok, key, apMac, staMac := packets.Dot11ParseEAPOL(packet, dot11); ok {
-		isEAPOL = true
-
 		// first, locate the AP in our list by its BSSID
 		ap, found := mod.Session.WiFi.Get(apMac.String())
 		if !found {
@@ -89,103 +83,56 @@ func (mod *WiFiModule) discoverHandshakes(radiotap *layers.RadioTap, dot11 *laye
 				apMac,
 				staMac,
 				key.MIC)
-		}
+		} else if dot11.Type.MainType() != layers.Dot11TypeData && dot11.Type.MainType() != layers.Dot11TypeCtrl {
+			if station != nil {
+				mod.Debug("saving extra %s frame (%d bytes) for %s",
+					dot11.Type.String(),
+					len(packet.Data()),
+					station.String())
 
-		// if we have unsaved packets as part of the handshake, save them.
-		numUnsaved := station.Handshake.NumUnsaved()
-		shakesFileName := mod.shakesFile
-		if mod.shakesAggregate == false {
-			shakesFileName = path.Join(shakesFileName, fmt.Sprintf("%s.pcapng", ap.PathFriendlyName()))
-		}
-		doSave := numUnsaved > 0
-		if doSave && shakesFileName != "" {
-			mod.Debug("(aggregate %v) saving handshake frames to %s", mod.shakesAggregate, shakesFileName)
-			if err := mod.Session.WiFi.SaveHandshakesTo(shakesFileName, mod.handle.LinkType()); err != nil {
-				mod.Error("error while saving handshake frames to %s: %s", shakesFileName, err)
+				station.Handshake.AddExtra(packet)
 			}
-		}
 
-		validPMKID := rawPMKID != nil
-		validHalfHandshake := !staIsUs && station.Handshake.Half()
-		validFullHandshake := station.Handshake.Complete()
-		// if we have unsaved packets AND
-		//   if we captured a PMKID OR
-		//   if we captured am half handshake which is not ours OR
-		//   if we captured a full handshake
-		if doSave && (validPMKID || validHalfHandshake || validFullHandshake) {
-			mod.Session.Events.Add("wifi.client.handshake", HandshakeEvent{
-				File:       shakesFileName,
-				NewPackets: numUnsaved,
-				AP:         apMac.String(),
-				Station:    staMac.String(),
-				PMKID:      rawPMKID,
-				Half:       station.Handshake.Half(),
-				Full:       station.Handshake.Complete(),
-			})
-			// make sure the info that we have key material for this AP
-			// is persisted even after stations are pruned due to inactivity
-			ap.WithKeyMaterial(true)
-		}
-		// if we added ourselves as a client station but we didn't get any
-		// PMKID, just remove it from the list of clients of this AP.
-		if staAdded || (staIsUs && rawPMKID == nil) {
-			ap.RemoveClient(staMac.String())
-		}
-	}
-
-	// quick and dirty heuristic, see thread here https://github.com/bettercap/bettercap/issues/810#issuecomment-805145392
-	if isEAPOL || (dot11.Type.MainType() != layers.Dot11TypeData && dot11.Type.MainType() != layers.Dot11TypeCtrl) {
-		target := (*network.Station)(nil)
-		targetAP := (*network.AccessPoint)(nil)
-
-		// collect target bssids
-		bssids := make([]net.HardwareAddr, 0)
-		for _, addr := range []net.HardwareAddr{dot11.Address1, dot11.Address2, dot11.Address3, dot11.Address4} {
-			if bytes.Equal(addr, network.BroadcastHw) == false {
-				bssids = append(bssids, addr)
-			}
-		}
-
-		// for each AP
-		mod.Session.WiFi.EachAccessPoint(func(mac string, ap *network.AccessPoint) {
-			// only check APs we captured handshakes of
-			if target == nil && ap.HasKeyMaterial() {
-				// search client station
-				ap.EachClient(func(mac string, station *network.Station) {
-					// any valid key material for this station?
-					if station.Handshake.Any() {
-						// check if target
-						for _, a := range bssids {
-							if bytes.Equal(a, station.HW) {
-								target = station
-								targetAP = ap
-								break
-							}
-						}
-					}
-				})
-			}
-		})
-
-		if target != nil {
-			mod.Debug("saving extra %s frame (%d bytes) for %s",
-				dot11.Type.String(),
-				len(packet.Data()),
-				target.String())
-
-			target.Handshake.AddExtra(packet)
-
+			// if we have unsaved packets as part of the handshake, save them.
+			numUnsaved := station.Handshake.NumUnsaved()
 			shakesFileName := mod.shakesFile
 			if mod.shakesAggregate == false {
-				shakesFileName = path.Join(shakesFileName, fmt.Sprintf("%s.pcapng", targetAP.PathFriendlyName()))
+				shakesFileName = path.Join(shakesFileName, fmt.Sprintf("%s.pcapng", ap.PathFriendlyName()))
 			}
-			if shakesFileName != "" {
+			doSave := numUnsaved > 0
+			if doSave && shakesFileName != "" {
 				mod.Debug("(aggregate %v) saving handshake frames to %s", mod.shakesAggregate, shakesFileName)
 				if err := mod.Session.WiFi.SaveHandshakesTo(shakesFileName, mod.handle.LinkType()); err != nil {
 					mod.Error("error while saving handshake frames to %s: %s", shakesFileName, err)
 				}
 			}
+
+			validPMKID := rawPMKID != nil
+			validHalfHandshake := !staIsUs && station.Handshake.Half()
+			validFullHandshake := station.Handshake.Complete()
+			// if we have unsaved packets AND
+			//   if we captured a PMKID OR
+			//   if we captured am half handshake which is not ours OR
+			//   if we captured a full handshake
+			if doSave && (validPMKID || validHalfHandshake || validFullHandshake) {
+				mod.Session.Events.Add("wifi.client.handshake", HandshakeEvent{
+					File:       shakesFileName,
+					NewPackets: numUnsaved,
+					AP:         apMac.String(),
+					Station:    staMac.String(),
+					PMKID:      rawPMKID,
+					Half:       station.Handshake.Half(),
+					Full:       station.Handshake.Complete(),
+				})
+				// make sure the info that we have key material for this AP
+				// is persisted even after stations are pruned due to inactivity
+				ap.WithKeyMaterial(true)
+			}
+			// if we added ourselves as a client station but we didn't get any
+			// PMKID, just remove it from the list of clients of this AP.
+			if staAdded || (staIsUs && rawPMKID == nil) {
+				ap.RemoveClient(staMac.String())
+			}
 		}
 	}
-
 }
