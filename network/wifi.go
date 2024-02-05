@@ -237,11 +237,7 @@ func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error
 
 	opts := pcapgo.DefaultNgWriterOptions
 	opts.SkipHeader = !doHead
-	writer, err := pcapgo.NewNgWriterInterface(
-		fp,
-		pcapgo.DefaultNgInterface,
-		opts,
-	)
+	writer, err := pcapgo.NewNgWriterInterface(fp, pcapgo.DefaultNgInterface, opts)
 	if err != nil {
 		return err
 	}
