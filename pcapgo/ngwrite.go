@@ -69,11 +69,10 @@ func NewNgWriterInterface(w io.Writer, intf NgInterface, options NgWriterOptions
 		w:       bufio.NewWriter(w),
 		options: options,
 	}
+	if err := ret.writeSectionHeader(); err != nil {
+		return nil, err
+	}
 	if !options.SkipHeader {
-		if err := ret.writeSectionHeader(); err != nil {
-			return nil, err
-		}
-
 		if _, err := ret.AddInterface(intf); err != nil {
 			return nil, err
 		}
