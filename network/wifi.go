@@ -234,6 +234,8 @@ func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error
 		return err
 	}
 	defer fp.Close()
+	pcapgo.DefaultNgInterface.Name = w.iface.Name()
+	pcapgo.DefaultNgInterface.LinkType = linkType
 
 	opts := pcapgo.DefaultNgWriterOptions
 	opts.SkipHeader = !doHead
