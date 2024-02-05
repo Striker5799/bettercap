@@ -2,6 +2,7 @@ package network
 
 import (
 	"encoding/json"
+	"github.com/evilsocket/islazy/fs"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -10,7 +11,7 @@ import (
 
 	"github.com/gopacket/gopacket"
 	"github.com/gopacket/gopacket/layers"
-	"github.com/gopacket/gopacket/pcapgo"
+	"github.com/jayofelony/bettercap/pcapgo"
 
 	"github.com/evilsocket/islazy/data"
 )
@@ -220,42 +221,43 @@ func (w *WiFi) NumHandshakes() int {
 }
 
 func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error {
-	if w.writer == nil {
-		// check if folder exists first
-		dirName := filepath.Dir(fileName)
-		if _, err := os.Stat(dirName); err != nil {
-			if err = os.MkdirAll(dirName, os.ModePerm); err != nil {
-				return err
-			}
-		}
-
-		fp, err := os.OpenFile(fileName, os.O_TRUNC|os.O_WRONLY|os.O_CREATE, 0644)
-		if err != nil {
-			return err
-		}
-		defer fp.Close()
-		pcapgo.DefaultNgInterface.Name = w.iface.Name()
-		// TODO: should be Closed/nil:ed in Clear()?
-		w.writer, err = pcapgo.NewNgWriter(fp, linkType)
-		if err != nil {
+	// check if folder exists first
+	dirName := filepath.Dir(fileName)
+	if _, err := os.Stat(dirName); err != nil {
+		if err = os.MkdirAll(dirName, os.ModePerm); err != nil {
 			return err
 		}
 	}
-	defer w.writer.Flush()
+	doHead := !fs.Exists(fileName)
+	fp, err := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_RDWR, 0666)
+	if err != nil {
+		return err
+	}
+	defer fp.Close()
+
+	opts := pcapgo.DefaultNgWriterOptions
+	opts.SkipHeader = !doHead
+	writer, err := pcapgo.NewNgWriterInterface(
+		fp,
+		pcapgo.DefaultNgInterface,
+		opts,
+	)
+	if err != nil {
+		return err
+	}
 
 	w.RLock()
 	defer w.RUnlock()
-
 	for _, ap := range w.aps {
 		for _, station := range ap.Clients() {
 			// if half (which includes also complete) or has pmkid
 			if station.Handshake.Any() {
-				var err error
+				err = nil
 				station.Handshake.EachUnsavedPacket(func(pkt gopacket.Packet) {
+					c := pkt.Metadata().CaptureInfo
+					c.InterfaceIndex = 0
 					if err == nil {
-						c := pkt.Metadata().CaptureInfo
-						c.InterfaceIndex = 0
-						err = w.writer.WritePacket(c, pkt.Data())
+						err = writer.WritePacket(c, pkt.Data())
 					}
 				})
 				if err != nil {
