@@ -247,8 +247,6 @@ func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error
 	}
 	defer writer.Flush()
 
-	w.RLock()
-	defer w.RUnlock()
 	for _, ap := range w.aps {
 		for _, station := range ap.Clients() {
 			// if half (which includes also complete) or has pmkid
