@@ -37,7 +37,6 @@ require (
 require (
 	github.com/antchfx/xpath v1.2.5 // indirect
 	github.com/chzyer/logex v1.2.1 // indirect
-	github.com/elazarl/goproxy/ext v0.0.0-20231117061959-7cc037d33fb5 // indirect
 	github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da // indirect
 	github.com/google/go-querystring v1.1.0 // indirect
 	github.com/kr/binarydist v0.1.0 // indirect
@@ -49,6 +48,6 @@ require (
 	golang.org/x/mod v0.15.0 // indirect
 	golang.org/x/sys v0.17.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
-	golang.org/x/tools v0.17.0 // indirect
+	golang.org/x/tools v0.18.0 // indirect
 	gopkg.in/sourcemap.v1 v1.0.5 // indirect
 )
