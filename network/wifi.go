@@ -3,6 +3,7 @@ package network
 import (
 	"encoding/json"
 	"github.com/evilsocket/islazy/fs"
+	"log"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -233,7 +234,6 @@ func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error
 	if err != nil {
 		return err
 	}
-	defer fp.Close()
 
 	// Set default interface name and linkType
 	pcapgo.DefaultNgInterface.Name = w.iface.Name()
@@ -245,6 +245,8 @@ func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error
 	if err != nil {
 		return err
 	}
+	log.Printf("%+v", writer)
+	defer fp.Close()
 	defer writer.Flush()
 
 	for _, ap := range w.aps {
