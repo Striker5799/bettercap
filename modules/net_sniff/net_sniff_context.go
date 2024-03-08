@@ -76,14 +76,13 @@ func (mod *Sniffer) GetContext() (error, *SnifferContext) {
 			return err, ctx
 		}
 	}
-
 	if err, ctx.Output = mod.StringParam("net.sniff.output"); err != nil {
 		return err, ctx
 	} else if ctx.Output != "" {
 		if ctx.OutputFile, err = os.Create(ctx.Output); err != nil {
 			return err, ctx
 		}
-
+		// TODO: change this to use pcapgo.NewNgWriter as well
 		ctx.OutputWriter = pcapgo.NewWriter(ctx.OutputFile)
 		ctx.OutputWriter.WriteFileHeader(65536, ctx.Handle.LinkType())
 	}
