@@ -239,8 +239,8 @@ func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error
 	NgIface := pcapgo.NgInterface{
 		Name:                w.iface.Name(),
 		OS:                  runtime.GOOS,
-		Comment:             "",
-		Description:         "Broadcom Chipset",
+		Comment:             w.iface.Hostname,
+		Description:         w.iface.Vendor,
 		LinkType:            linkType,
 		MACAddress:          w.iface.HwAddress,
 		SnapLength:          0, //unlimited
