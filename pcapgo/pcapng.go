@@ -197,16 +197,6 @@ type NgInterface struct {
 	OS string
 	// LinkType is the linktype of the interface.
 	LinkType layers.LinkType
-	// IPV4 Address is the interface's IP. This value might be empty if this option is missing.
-	IPv4 string
-	// IPV6 Address is the interface's IP. This value might be empty if this option is missing.
-	IPv6 string
-	// MAC Address is the interface's MAC. This value might be empty if this option is missing.
-	MACaddress string
-	// EUI Address is the interface's EUI. This value might be empty if this option is missing.
-	EUIaddress string
-	// Speed is the interface's speed. This value might be empty if this option is missing.
-	Speed string
 	// TimestampResolution is the timestamp resolution of the packets in the pcapng file belonging to this interface.
 	TimestampResolution NgResolution
 	// TimestampOffset is the timestamp offset in seconds of the packets in the pcapng file belonging to this interface.
