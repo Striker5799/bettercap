@@ -85,37 +85,31 @@ var (
 type ngOptionCode uint16
 
 const (
-	ngOptionCodeEndOfOptions    ngOptionCode = iota // end of options. must be at the end of options in a block
-	ngOptionCodeComment                             // comment
-	ngOptionCodeHardware                            // description of the hardware
-	ngOptionCodeOS                                  // name of the operating system
-	ngOptionCodeUserApplication                     // name of the application
-)
-
-const (
-	ngOptionCodeInterfaceName                ngOptionCode = iota + 2 // interface name
-	ngOptionCodeInterfaceDescription                                 // interface description
-	ngOptionCodeInterfaceIPV4Address                                 // IPv4 network address and netmask for the interface
-	ngOptionCodeInterfaceIPV6Address                                 // IPv6 network address and prefix length for the interface
-	ngOptionCodeInterfaceMACAddress                                  // interface hardware MAC address
-	ngOptionCodeInterfaceEUIAddress                                  // interface hardware EUI address
-	ngOptionCodeInterfaceSpeed                                       // interface speed in bits/s
-	ngOptionCodeInterfaceTimestampResolution                         // timestamp resolution
-	ngOptionCodeInterfaceTimezone                                    // time zone
-	ngOptionCodeInterfaceFilter                                      // capture filter
-	ngOptionCodeInterfaceOS                                          // operating system
-	ngOptionCodeInterfaceFCSLength                                   // length of the Frame Check Sequence in bits
-	ngOptionCodeInterfaceTimestampOffset                             // offset (in seconds) that must be added to packet timestamp
-)
-
-const (
-	ngOptionCodeInterfaceStatisticsStartTime         ngOptionCode = iota + 2 // Start of capture
-	ngOptionCodeInterfaceStatisticsEndTime                                   // End of capture
-	ngOptionCodeInterfaceStatisticsInterfaceReceived                         // Packets received by physical interface
-	ngOptionCodeInterfaceStatisticsInterfaceDropped                          // Packets dropped by physical interface
-	ngOptionCodeInterfaceStatisticsFilterAccept                              // Packets accepted by filter
-	ngOptionCodeInterfaceStatisticsOSDrop                                    // Packets dropped by operating system
-	ngOptionCodeInterfaceStatisticsDelivered                                 // Packets delivered to user
+	ngOptionCodeEndOfOptions                         ngOptionCode = iota // end of options. must be at the end of options in a block
+	ngOptionCodeComment                                                  // comment
+	ngOptionCodeHardware                                                 // description of the hardware
+	ngOptionCodeOS                                                       // name of the operating system
+	ngOptionCodeUserApplication                                          // name of the application
+	ngOptionCodeInterfaceName                                            // interface name
+	ngOptionCodeInterfaceDescription                                     // interface description
+	ngOptionCodeInterfaceIPV4Address                                     // IPv4 network address and netmask for the interface
+	ngOptionCodeInterfaceIPV6Address                                     // IPv6 network address and prefix length for the interface
+	ngOptionCodeInterfaceMACAddress                                      // interface hardware MAC address
+	ngOptionCodeInterfaceEUIAddress                                      // interface hardware EUI address
+	ngOptionCodeInterfaceSpeed                                           // interface speed in bits/s
+	ngOptionCodeInterfaceTimestampResolution                             // timestamp resolution
+	ngOptionCodeInterfaceTimezone                                        // time zone
+	ngOptionCodeInterfaceFilter                                          // capture filter
+	ngOptionCodeInterfaceOS                                              // operating system
+	ngOptionCodeInterfaceFCSLength                                       // length of the Frame Check Sequence in bits
+	ngOptionCodeInterfaceTimestampOffset                                 // offset (in seconds) that must be added to packet timestamp
+	ngOptionCodeInterfaceStatisticsStartTime                             // Start of capture
+	ngOptionCodeInterfaceStatisticsEndTime                               // End of capture
+	ngOptionCodeInterfaceStatisticsInterfaceReceived                     // Packets received by physical interface
+	ngOptionCodeInterfaceStatisticsInterfaceDropped                      // Packets dropped by physical interface
+	ngOptionCodeInterfaceStatisticsFilterAccept                          // Packets accepted by filter
+	ngOptionCodeInterfaceStatisticsOSDrop                                // Packets dropped by operating system
+	ngOptionCodeInterfaceStatisticsDelivered                             // Packets delivered to user
 )
 
 // ngOption is a pcapng option
@@ -197,6 +191,20 @@ type NgInterface struct {
 	OS string
 	// LinkType is the linktype of the interface.
 	LinkType layers.LinkType
+	// IPv4Address is the IPv4 address of the interface. This value might be empty if this option is missing.
+	IPv4Address string
+	// IPv6Address is the IPv6 address of the interface. This value might be empty if this option is missing.
+	IPv6Address string
+	// MACAddrres is the MAC of the interface. This value might be empty if this option is missing.
+	MACAddress string
+	// EUIAddress is the EUI of the interface. This value might be empty if this option is missing.
+	EUIAddress string
+	// Speed is the speed of the interface in bits/s. This value might be empty if this option is missing.
+	Speed string
+	// Timezone is the timezone the interface is in. This value might be empty if this option is missing.
+	Timezone string
+	// FCSLength is the Frame Check Sequence in bits. This value might be empty if this option is missing.
+	FCSLength string
 	// TimestampResolution is the timestamp resolution of the packets in the pcapng file belonging to this interface.
 	TimestampResolution NgResolution
 	// TimestampOffset is the timestamp offset in seconds of the packets in the pcapng file belonging to this interface.
