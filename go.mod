@@ -16,7 +16,7 @@ require (
 	github.com/evilsocket/islazy v1.11.0
 	github.com/gobwas/glob v0.2.3
 	github.com/google/go-github/v57 v57.0.0
-	github.com/google/gousb v1.1.2
+	github.com/google/gousb v1.1.3
 	github.com/gopacket/gopacket v1.2.0
 	github.com/gorilla/mux v1.8.1
 	github.com/gorilla/websocket v1.5.1
@@ -31,7 +31,7 @@ require (
 	github.com/stratoberry/go-gpsd v1.3.0
 	github.com/tarm/serial v0.0.0-20180830185346-98f6abe2eb07
 	github.com/thoj/go-ircevent v0.0.0-20210723090443-73e444401d64
-	golang.org/x/net v0.21.0
+	golang.org/x/net v0.22.0
 )
 
 require (
@@ -45,9 +45,9 @@ require (
 	github.com/mgutz/ansi v0.0.0-20200706080929-d51e80ef957d // indirect
 	github.com/mgutz/logxi v0.0.0-20161027140823-aebf8a7d67ab // indirect
 	github.com/pkg/errors v0.9.1 // indirect
-	golang.org/x/mod v0.15.0 // indirect
-	golang.org/x/sys v0.17.0 // indirect
+	golang.org/x/mod v0.16.0 // indirect
+	golang.org/x/sys v0.18.0 // indirect
 	golang.org/x/text v0.14.0 // indirect
-	golang.org/x/tools v0.18.0 // indirect
+	golang.org/x/tools v0.19.0 // indirect
 	gopkg.in/sourcemap.v1 v1.0.5 // indirect
 )
