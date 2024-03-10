@@ -204,7 +204,7 @@ func (w *NgWriter) writeOptions(options []ngOption) error {
 		}
 	}
 
-	// options must be folled by an end of options option
+	// options must be followed by an "end of options" option
 	binary.LittleEndian.PutUint16(w.buf[0:2], uint16(ngOptionCodeEndOfOptions))
 	binary.LittleEndian.PutUint16(w.buf[2:4], 0)
 	_, err := w.w.Write(w.buf[:4])
