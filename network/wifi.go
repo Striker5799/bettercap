@@ -3,13 +3,12 @@ package network
 import (
 	"encoding/json"
 	"github.com/evilsocket/islazy/fs"
-	"log"
 	"os"
 	"path/filepath"
 	"strconv"
 	"sync"
 	"time"
-
+	"log"
 	"github.com/gopacket/gopacket"
 	"github.com/gopacket/gopacket/layers"
 	"github.com/jayofelony/bettercap/pcapgo"
@@ -221,7 +220,7 @@ func (w *WiFi) NumHandshakes() int {
 	return sum
 }
 
-func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error {
+func (w *WiFi) SaveHandshakesToA(fileName string, linkType layers.LinkType) error {
 	// check if folder exists first
 	dirName := filepath.Dir(fileName)
 	if _, err := os.Stat(dirName); err != nil {
@@ -234,6 +233,7 @@ func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error
 	if err != nil {
 		return err
 	}
+	defer fp.Close()
 
 	// Set default interface name and linkType
 	pcapgo.DefaultNgInterface.Name = w.iface.Name()
@@ -245,15 +245,19 @@ func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error
 	if err != nil {
 		return err
 	}
-	log.Printf("%+v", writer)
-	defer fp.Close()
+
+	log.Printf("%s", fileName)
+
+	
+	defer w.RUnlock()
+
+
 	defer writer.Flush()
 
 	for _, ap := range w.aps {
 		for _, station := range ap.Clients() {
 			// if half (which includes also complete) or has pmkid
 			if station.Handshake.Any() {
-				err = nil
 				station.Handshake.EachUnsavedPacket(func(pkt gopacket.Packet) {
 					c := pkt.Metadata().CaptureInfo
 					c.InterfaceIndex = 0
@@ -265,6 +269,59 @@ func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error
 					return err
 				}
 			}
+		}
+	}
+	return nil
+}
+
+
+func (w *WiFi) SaveHandshakesToB(fileName string, linkType layers.LinkType, handshakes Handshake) error {
+
+	
+
+	dirName := filepath.Dir(fileName)
+	if _, err := os.Stat(dirName); err != nil {
+		if err = os.MkdirAll(dirName, os.ModePerm); err != nil {
+			return err
+		}
+	}
+	doHead := !fs.Exists(fileName)
+	fp, err := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_RDWR, 0666)
+	if err != nil {
+		return err
+	}
+	defer fp.Close()
+
+	// Set default interface name and linkType
+	pcapgo.DefaultNgInterface.Name = w.iface.Name()
+	pcapgo.DefaultNgInterface.LinkType = linkType
+
+	opts := pcapgo.DefaultNgWriterOptions
+	opts.SkipHeader = !doHead
+	writer, err := pcapgo.NewNgWriterInterface(fp, pcapgo.DefaultNgInterface, opts)
+	if err != nil {
+		return err
+	}
+
+	log.Printf("%s", fileName)
+
+
+	w.RLock()
+	defer w.RUnlock()
+
+	defer writer.Flush()
+	// if half (which includes also complete) or has pmkid
+	if handshakes.Any() {
+		handshakes.EachUnsavedPacket(func(pkt gopacket.Packet) {
+			c := pkt.Metadata().CaptureInfo
+			c.InterfaceIndex = 0
+			log.Printf("%+v", c)
+			if err == nil {
+				err = writer.WritePacket(c, pkt.Data())
+			}
+		})
+		if err != nil {
+			return err
 		}
 	}
 	return nil

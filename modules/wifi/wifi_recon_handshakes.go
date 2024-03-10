@@ -6,6 +6,7 @@ import (
 	"github.com/jayofelony/bettercap/network"
 	"net"
 	"path"
+	"log"
 
 	"github.com/jayofelony/bettercap/packets"
 
@@ -23,15 +24,13 @@ func allZeros(s []byte) bool {
 }
 
 func (mod *WiFiModule) discoverHandshakes(radiotap *layers.RadioTap, dot11 *layers.Dot11, packet gopacket.Packet) {
-	isEAPOL := false
 
 	if ok, key, apMac, staMac := packets.Dot11ParseEAPOL(packet, dot11); ok {
-		isEAPOL = true
 
 		// first, locate the AP in our list by its BSSID
 		ap, found := mod.Session.WiFi.Get(apMac.String())
 		if !found {
-			mod.Warning("could not find AP with BSSID %s", apMac.String())
+			log.Printf("could not find AP with BSSID %s", apMac.String())
 			return
 		}
 
@@ -51,13 +50,20 @@ func (mod *WiFiModule) discoverHandshakes(radiotap *layers.RadioTap, dot11 *laye
 		rawPMKID := []byte(nil)
 		if !key.Install && key.KeyACK && !key.KeyMIC {
 			// [1] (ACK) AP is sending ANonce to the client
+
+			if ap.Station.Handshake.Beacon != nil {
+				log.Printf("adding beacon frame to handshake for %s", apMac)
+				station.Handshake.AddFrame(1, ap.Station.Handshake.Beacon)
+			}
+
+
 			rawPMKID = station.Handshake.AddAndGetPMKID(packet)
 			PMKID := "without PMKID"
 			if rawPMKID != nil {
 				PMKID = "with PMKID"
 			}
 
-			mod.Debug("got frame 1/4 of the %s <-> %s handshake (%s) (anonce:%x)",
+			log.Printf("got frame 1/4 of the %s <-> %s handshake (%s) (anonce:%x)",
 				apMac,
 				staMac,
 				PMKID,
@@ -67,25 +73,22 @@ func (mod *WiFiModule) discoverHandshakes(radiotap *layers.RadioTap, dot11 *laye
 			//https://github.com/ZerBea/hcxtools/issues/92
 			//https://github.com/bettercap/bettercap/issues/592
 
-			if ap.Station.Handshake.Beacon != nil {
-				mod.Debug("adding beacon frame to handshake for %s", apMac)
-				station.Handshake.AddFrame(1, ap.Station.Handshake.Beacon)
-			}
+
 
 		} else if !key.Install && !key.KeyACK && key.KeyMIC && !allZeros(key.Nonce) {
 			// [2] (MIC) client is sending SNonce+MIC to the API
-			station.Handshake.AddFrame(1, packet)
+			station.Handshake.AddFrame(2, packet)
 
-			mod.Debug("got frame 2/4 of the %s <-> %s handshake (snonce:%x mic:%x)",
+			log.Printf("got frame 2/4 of the %s <-> %s handshake (snonce:%x mic:%x)",
 				apMac,
 				staMac,
 				key.Nonce,
 				key.MIC)
 		} else if key.Install && key.KeyACK && key.KeyMIC {
 			// [3]: (INSTALL+ACK+MIC) AP informs the client that the PTK is installed
-			station.Handshake.AddFrame(2, packet)
+			station.Handshake.AddFrame(3, packet)
 
-			mod.Debug("got frame 3/4 of the %s <-> %s handshake (mic:%x)",
+			log.Printf("got frame 3/4 of the %s <-> %s handshake (mic:%x)",
 				apMac,
 				staMac,
 				key.MIC)
@@ -97,13 +100,11 @@ func (mod *WiFiModule) discoverHandshakes(radiotap *layers.RadioTap, dot11 *laye
 		if mod.shakesAggregate == false {
 			shakesFileName = path.Join(shakesFileName, fmt.Sprintf("%s.pcapng", ap.PathFriendlyName()))
 		}
-		doSave := numUnsaved > 0
-		if doSave && shakesFileName != "" {
-			mod.Debug("(aggregate %v) saving handshake frames to %s", mod.shakesAggregate, shakesFileName)
-			if err := mod.Session.WiFi.SaveHandshakesTo(shakesFileName, mod.handle.LinkType()); err != nil {
-				mod.Error("error while saving handshake frames to %s: %s", shakesFileName, err)
-			}
-		}
+
+
+
+
+
 
 		validPMKID := rawPMKID != nil
 		validHalfHandshake := !staIsUs && station.Handshake.Half()
@@ -112,6 +113,8 @@ func (mod *WiFiModule) discoverHandshakes(radiotap *layers.RadioTap, dot11 *laye
 		//   if we captured a PMKID OR
 		//   if we captured am half handshake which is not ours OR
 		//   if we captured a full handshake
+
+		doSave := numUnsaved > 0
 		if doSave && (validPMKID || validHalfHandshake || validFullHandshake) {
 			mod.Session.Events.Add("wifi.client.handshake", HandshakeEvent{
 				File:       shakesFileName,
@@ -131,59 +134,54 @@ func (mod *WiFiModule) discoverHandshakes(radiotap *layers.RadioTap, dot11 *laye
 		if staAdded || (staIsUs && rawPMKID == nil) {
 			ap.RemoveClient(staMac.String())
 		}
-	}
 
 	// quick and dirty heuristic, see thread here https://github.com/bettercap/bettercap/issues/810#issuecomment-805145392
-	if isEAPOL || (dot11.Type.MainType() != layers.Dot11TypeData && dot11.Type.MainType() != layers.Dot11TypeCtrl) {
-		target := (*network.Station)(nil)
-		targetAP := (*network.AccessPoint)(nil)
+		if (dot11.Type.MainType() != layers.Dot11TypeData && dot11.Type.MainType() != layers.Dot11TypeCtrl) {
+			target := (*network.Station)(nil)
 
-		// collect target bssids
-		bssids := make([]net.HardwareAddr, 0)
-		for _, addr := range []net.HardwareAddr{dot11.Address1, dot11.Address2, dot11.Address3, dot11.Address4} {
-			if bytes.Equal(addr, network.BroadcastHw) == false {
-				bssids = append(bssids, addr)
+			// collect target bssids
+			bssids := make([]net.HardwareAddr, 0)
+			for _, addr := range []net.HardwareAddr{dot11.Address1, dot11.Address2, dot11.Address3, dot11.Address4} {
+				if bytes.Equal(addr, network.BroadcastHw) == false {
+					bssids = append(bssids, addr)
+				}
 			}
-		}
 
-		// for each AP
-		mod.Session.WiFi.EachAccessPoint(func(mac string, ap *network.AccessPoint) {
-			// only check APs we captured handshakes of
-			if target == nil && ap.HasKeyMaterial() {
-				// search client station
-				ap.EachClient(func(mac string, station *network.Station) {
-					// any valid key material for this station?
-					if station.Handshake.Any() {
-						// check if target
-						for _, a := range bssids {
-							if bytes.Equal(a, station.HW) {
-								target = station
-								targetAP = ap
-								break
+			// for each AP
+			mod.Session.WiFi.EachAccessPoint(func(mac string, ap *network.AccessPoint) {
+				// only check APs we captured handshakes of
+				if target == nil && ap.HasKeyMaterial() {
+					// search client station
+					ap.EachClient(func(mac string, station *network.Station) {
+						// any valid key material for this station?
+						if station.Handshake.Any() {
+							// check if target
+							for _, a := range bssids {
+								if bytes.Equal(a, station.HW) {
+									target = station
+									break
+								}
 							}
 						}
-					}
-				})
-			}
-		})
-
-		if target != nil {
-			mod.Debug("saving extra %s frame (%d bytes) for %s",
-				dot11.Type.String(),
-				len(packet.Data()),
-				target.String())
-
-			target.Handshake.AddExtra(packet)
-
-			shakesFileName := mod.shakesFile
-			if mod.shakesAggregate == false {
-				shakesFileName = path.Join(shakesFileName, fmt.Sprintf("%s.pcapng", targetAP.PathFriendlyName()))
-			}
-			if shakesFileName != "" {
-				mod.Debug("(aggregate %v) saving handshake frames to %s", mod.shakesAggregate, shakesFileName)
-				if err := mod.Session.WiFi.SaveHandshakesTo(shakesFileName, mod.handle.LinkType()); err != nil {
-					mod.Error("error while saving handshake frames to %s: %s", shakesFileName, err)
+					})
 				}
+			})
+
+			if target != nil {
+				log.Printf("saving extra %s frame (%d bytes) for %s",
+					dot11.Type.String(),
+					len(packet.Data()),
+					target.String())
+
+				target.Handshake.AddExtra(packet)
+
+
+			}
+		}
+		if doSave && shakesFileName != "" {
+			log.Printf("(aggregate %v) saving handshake frames to %s", mod.shakesAggregate, shakesFileName)
+			if err := mod.Session.WiFi.SaveHandshakesToB(shakesFileName, mod.handle.LinkType(), *station.Handshake); err != nil {
+				log.Printf("error while saving handshake frames to %s: %s", shakesFileName, err)
 			}
 		}
 	}
