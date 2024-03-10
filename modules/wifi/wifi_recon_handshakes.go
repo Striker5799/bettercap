@@ -4,9 +4,9 @@ import (
 	"bytes"
 	"fmt"
 	"github.com/jayofelony/bettercap/network"
+	"log"
 	"net"
 	"path"
-	"log"
 
 	"github.com/jayofelony/bettercap/packets"
 
@@ -56,7 +56,6 @@ func (mod *WiFiModule) discoverHandshakes(radiotap *layers.RadioTap, dot11 *laye
 				station.Handshake.AddFrame(0, ap.Station.Handshake.Beacon)
 			}
 
-
 			rawPMKID = station.Handshake.AddAndGetPMKID(packet)
 			PMKID := "without PMKID"
 			if rawPMKID != nil {
@@ -73,11 +72,9 @@ func (mod *WiFiModule) discoverHandshakes(radiotap *layers.RadioTap, dot11 *laye
 			//https://github.com/ZerBea/hcxtools/issues/92
 			//https://github.com/bettercap/bettercap/issues/592
 
-
-
 		} else if !key.Install && !key.KeyACK && key.KeyMIC && !allZeros(key.Nonce) {
 			// [2] (MIC) client is sending SNonce+MIC to the API
-			station.Handshake.AddFrame(2, packet)
+			station.Handshake.AddFrame(1, packet)
 
 			log.Printf("got frame 2/4 of the %s <-> %s handshake (snonce:%x mic:%x)",
 				apMac,
@@ -86,7 +83,7 @@ func (mod *WiFiModule) discoverHandshakes(radiotap *layers.RadioTap, dot11 *laye
 				key.MIC)
 		} else if key.Install && key.KeyACK && key.KeyMIC {
 			// [3]: (INSTALL+ACK+MIC) AP informs the client that the PTK is installed
-			station.Handshake.AddFrame(3, packet)
+			station.Handshake.AddFrame(2, packet)
 
 			log.Printf("got frame 3/4 of the %s <-> %s handshake (mic:%x)",
 				apMac,
@@ -100,11 +97,6 @@ func (mod *WiFiModule) discoverHandshakes(radiotap *layers.RadioTap, dot11 *laye
 		if mod.shakesAggregate == false {
 			shakesFileName = path.Join(shakesFileName, fmt.Sprintf("%s.pcapng", ap.PathFriendlyName()))
 		}
-
-
-
-
-
 
 		validPMKID := rawPMKID != nil
 		validHalfHandshake := !staIsUs && station.Handshake.Half()
@@ -135,8 +127,8 @@ func (mod *WiFiModule) discoverHandshakes(radiotap *layers.RadioTap, dot11 *laye
 			ap.RemoveClient(staMac.String())
 		}
 
-	// quick and dirty heuristic, see thread here https://github.com/bettercap/bettercap/issues/810#issuecomment-805145392
-		if (dot11.Type.MainType() != layers.Dot11TypeData && dot11.Type.MainType() != layers.Dot11TypeCtrl) {
+		// quick and dirty heuristic, see thread here https://github.com/bettercap/bettercap/issues/810#issuecomment-805145392
+		if dot11.Type.MainType() != layers.Dot11TypeData && dot11.Type.MainType() != layers.Dot11TypeCtrl {
 			target := (*network.Station)(nil)
 
 			// collect target bssids
@@ -174,7 +166,6 @@ func (mod *WiFiModule) discoverHandshakes(radiotap *layers.RadioTap, dot11 *laye
 					target.String())
 
 				target.Handshake.AddExtra(packet)
-
 
 			}
 		}
