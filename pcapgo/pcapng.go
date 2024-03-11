@@ -195,6 +195,8 @@ type NgInterface struct {
 	Filter string
 	// OS is the operating system this interface was controlled by. This value might be empty if this option is missing.
 	OS string
+	// IPv4 Address can be empty.
+	IPv4Address string
 	// LinkType is the linktype of the interface.
 	LinkType layers.LinkType
 	// TimestampResolution is the timestamp resolution of the packets in the pcapng file belonging to this interface.

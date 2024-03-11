@@ -298,6 +298,11 @@ func (w *NgWriter) AddInterface(intf NgInterface) (id int, err error) {
 		scratch[i].raw = intf.TimestampOffset
 		i++
 	}
+	if intf.IPv4Address != "" {
+		scratch[i].code = ngOptionCodeInterfaceIPV4Address
+		scratch[i].raw = intf.IPv4Address
+		i++
+	}
 	scratch[i].code = ngOptionCodeInterfaceTimestampResolution
 	scratch[i].raw = uint8(9) // fix resolution to nanoseconds (time.Time) in decimal
 	i++
