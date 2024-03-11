@@ -266,7 +266,7 @@ func (w *NgWriter) AddInterface(intf NgInterface) (id int, err error) {
 	id = int(w.intf)
 	w.intf++
 
-	var scratch [7]ngOption
+	var scratch [14]ngOption
 	i := 0
 	if intf.Name != "" {
 		scratch[i].code = ngOptionCodeInterfaceName
@@ -296,6 +296,41 @@ func (w *NgWriter) AddInterface(intf NgInterface) (id int, err error) {
 	if intf.TimestampOffset != 0 {
 		scratch[i].code = ngOptionCodeInterfaceTimestampOffset
 		scratch[i].raw = intf.TimestampOffset
+		i++
+	}
+	if intf.IPv4Address != "" {
+		scratch[i].code = ngOptionCodeInterfaceIPV4Address
+		scratch[i].raw = intf.IPv4Address
+		i++
+	}
+	if intf.IPv6Address != "" {
+		scratch[i].code = ngOptionCodeInterfaceIPV6Address
+		scratch[i].raw = intf.IPv6Address
+		i++
+	}
+	if intf.MACAddress != "" {
+		scratch[i].code = ngOptionCodeInterfaceMACAddress
+		scratch[i].raw = intf.MACAddress
+		i++
+	}
+	if intf.EUIAddress != "" {
+		scratch[i].code = ngOptionCodeInterfaceEUIAddress
+		scratch[i].raw = intf.EUIAddress
+		i++
+	}
+	if intf.Speed != "" {
+		scratch[i].code = ngOptionCodeInterfaceSpeed
+		scratch[i].raw = intf.Speed
+		i++
+	}
+	if intf.Timezone != "" {
+		scratch[i].code = ngOptionCodeInterfaceTimezone
+		scratch[i].raw = intf.Timezone
+		i++
+	}
+	if intf.FCSLength != "" {
+		scratch[i].code = ngOptionCodeInterfaceFCSLength
+		scratch[i].raw = intf.FCSLength
 		i++
 	}
 	scratch[i].code = ngOptionCodeInterfaceTimestampResolution
