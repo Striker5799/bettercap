@@ -363,7 +363,7 @@ func (w *NgWriter) AddInterface(intf NgInterface) (id int, err error) {
 // WriteInterfaceStats writes the given interface statistics for the given interface id to the file. Empty values are not written.
 func (w *NgWriter) WriteInterfaceStats(intf int, stats NgInterfaceStatistics) error {
 	if intf >= int(w.intf) || intf < 0 {
-		return fmt.Errorf("can't send statistics for non existent interface %d; have only %d interfaces", intf, w.intf)
+		return fmt.Errorf("Can't send statistics for non existent interface %d; have only %d interfaces", intf, w.intf)
 	}
 
 	var scratch [4]ngOption

@@ -240,7 +240,7 @@ func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error
 		Name:                w.iface.Name(),
 		OS:                  runtime.GOOS,
 		Comment:             "",
-		Description:         "Broadcom Chipset",
+		Description:         "",
 		LinkType:            linkType,
 		MACAddress:          w.iface.HwAddress,
 		SnapLength:          0, //unlimited
@@ -251,7 +251,7 @@ func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error
 		SectionInfo: pcapgo.NgSectionInfo{
 			Hardware:    runtime.GOARCH,
 			OS:          runtime.GOOS,
-			Application: "bettercap/pwnagotchi",
+			Application: "bettercap",
 		},
 		SkipHeader: skipHead}
 

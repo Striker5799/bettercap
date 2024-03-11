@@ -77,9 +77,9 @@ const (
 	DSB_SECRETS_TYPE_ZIGBEE_APS_KEY uint32 = 0x5a415053 /* Zigbee APS Key */
 )
 
-// ErrUnknownSecretsType define error types for DSB
+// define error types for DSB
 var (
-	ErrUnknownSecretsType = errors.New("unknown Decryption Secrets Block (DSB) type")
+	ErrUnknownSecretsType = errors.New("Unknown Decryption Secrets Block (DSB) type")
 )
 
 type ngOptionCode uint16
@@ -189,22 +189,22 @@ type NgInterface struct {
 	Filter string
 	// OS is the operating system this interface was controlled by. This value might be empty if this option is missing.
 	OS string
-	// IPv4 can be empty.
-	IPv4Address string
-	// IPv6 can be empty.
-	IPv6Address string
-	// MAC can be empty.
-	MACAddress string
-	// EUI can be empty.
-	EUIAddress string
-	// Speed can be empty.
-	Speed string
-	// Timezone can be empty.
-	Timezone string
-	// FCSLength can be empty.
-	FCSLength string
 	// LinkType is the linktype of the interface.
 	LinkType layers.LinkType
+	// IPv4Address is the IPv4 address of the interface. This value might be empty if this option is missing.
+	IPv4Address string
+	// IPv6Address is the IPv6 address of the interface. This value might be empty if this option is missing.
+	IPv6Address string
+	// MACAddrres is the MAC of the interface. This value might be empty if this option is missing.
+	MACAddress string
+	// EUIAddress is the EUI of the interface. This value might be empty if this option is missing.
+	EUIAddress string
+	// Speed is the speed of the interface in bits/s. This value might be empty if this option is missing.
+	Speed string
+	// Timezone is the timezone the interface is in. This value might be empty if this option is missing.
+	Timezone string
+	// FCSLength is the Frame Check Sequence in bits. This value might be empty if this option is missing.
+	FCSLength string
 	// TimestampResolution is the timestamp resolution of the packets in the pcapng file belonging to this interface.
 	TimestampResolution NgResolution
 	// TimestampOffset is the timestamp offset in seconds of the packets in the pcapng file belonging to this interface.
