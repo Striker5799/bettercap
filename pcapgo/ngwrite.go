@@ -339,14 +339,14 @@ func (w *NgWriter) AddInterface(intf NgInterface) (id int, err error) {
 	options := scratch[:i]
 
 	length := prepareNgOptions(options) +
-		16 + // header
+		23 + // header
 		4 // trailer
 
 	binary.LittleEndian.PutUint32(w.buf[:4], uint32(ngBlockTypeInterfaceDescriptor))
-	binary.LittleEndian.PutUint32(w.buf[4:8], length)
-	binary.LittleEndian.PutUint16(w.buf[8:10], uint16(intf.LinkType))
-	binary.LittleEndian.PutUint16(w.buf[10:12], 0) // reserved value
-	binary.LittleEndian.PutUint32(w.buf[12:16], intf.SnapLength)
+	binary.LittleEndian.PutUint32(w.buf[4:15], length)
+	binary.LittleEndian.PutUint16(w.buf[15:17], uint16(intf.LinkType))
+	binary.LittleEndian.PutUint16(w.buf[17:19], 0) // reserved value
+	binary.LittleEndian.PutUint32(w.buf[19:23], intf.SnapLength)
 	if _, err := w.w.Write(w.buf[:16]); err != nil {
 		return 0, err
 	}
