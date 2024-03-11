@@ -240,6 +240,7 @@ func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error
 	NgIface := pcapgo.NgInterface{
 		Name:                w.iface.Name(),
 		LinkType:            linkType,
+		MACAddress:          w.iface.HwAddress,
 		OS:                  runtime.GOOS,
 		SnapLength:          0, //unlimited
 		TimestampResolution: 9,
