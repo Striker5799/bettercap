@@ -95,7 +95,7 @@ func (mod *WiFiModule) discoverHandshakes(radiotap *layers.RadioTap, dot11 *laye
 		numUnsaved := station.Handshake.NumUnsaved()
 		shakesFileName := mod.shakesFile
 		if mod.shakesAggregate == false {
-			shakesFileName = path.Join(shakesFileName, fmt.Sprintf("%s.pcapng", ap.PathFriendlyName()))
+			shakesFileName = path.Join(shakesFileName, fmt.Sprintf("%s.pcap", ap.PathFriendlyName()))
 		}
 		doSave := numUnsaved > 0
 		if doSave && shakesFileName != "" {
@@ -177,7 +177,7 @@ func (mod *WiFiModule) discoverHandshakes(radiotap *layers.RadioTap, dot11 *laye
 
 			shakesFileName := mod.shakesFile
 			if mod.shakesAggregate == false {
-				shakesFileName = path.Join(shakesFileName, fmt.Sprintf("%s.pcapng", targetAP.PathFriendlyName()))
+				shakesFileName = path.Join(shakesFileName, fmt.Sprintf("%s.pcap", targetAP.PathFriendlyName()))
 			}
 			if shakesFileName != "" {
 				mod.Debug("(aggregate %v) saving handshake frames to %s", mod.shakesAggregate, shakesFileName)
@@ -187,5 +187,4 @@ func (mod *WiFiModule) discoverHandshakes(radiotap *layers.RadioTap, dot11 *laye
 			}
 		}
 	}
-
 }
