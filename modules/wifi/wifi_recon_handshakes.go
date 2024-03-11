@@ -187,4 +187,5 @@ func (mod *WiFiModule) discoverHandshakes(radiotap *layers.RadioTap, dot11 *laye
 			}
 		}
 	}
+
 }

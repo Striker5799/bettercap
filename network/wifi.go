@@ -247,7 +247,6 @@ func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error
 		IPv6Address:         w.iface.Ip6Address,
 		SnapLength:          0, //unlimited
 		TimestampResolution: 9,
-		TimestampOffset:     0,
 	}
 
 	NgOpts := pcapgo.NgWriterOptions{
