@@ -2,11 +2,11 @@
 
 // Copyright (c) 2012 Google, Inc. All rights reserved.
 // Copyright (c) 2009-2011 Andreas Krennmair. All rights reserved.
-//
+// 
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
 // met:
-//
+// 
 //    * Redistributions of source code must retain the above copyright
 // notice, this list of conditions and the following disclaimer.
 //    * Redistributions in binary form must reproduce the above
@@ -16,7 +16,7 @@
 //    * Neither the name of Andreas Krennmair, Google, nor the names of its
 // contributors may be used to endorse or promote products derived from
 // this software without specific prior written permission.
-//
+// 
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 // "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 // LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -382,6 +382,9 @@ func (w *NgWriter) WriteInterfaceStats(intf int, stats NgInterfaceStatistics) er
 
 // WritePacket writes out packet with the given data and capture info. The given InterfaceIndex must already be added to the file. InterfaceIndex 0 is automatically added by the NewWriter* methods.
 func (w *NgWriter) WritePacket(ci gopacket.CaptureInfo, data []byte) error {
+	if ci.InterfaceIndex >= int(w.intf) || ci.InterfaceIndex < 0 {
+		return fmt.Errorf("Can't send statistics for non existent interface %d; have only %d interfaces", ci.InterfaceIndex, w.intf)
+	}
 	if ci.CaptureLength != len(data) {
 		return fmt.Errorf("capture length %d does not match data length %d", ci.CaptureLength, len(data))
 	}
