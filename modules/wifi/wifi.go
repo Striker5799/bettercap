@@ -695,10 +695,10 @@ func (mod *WiFiModule) Start() error {
 			// perform initial dot11 parsing and layers validation
 			if ok, radiotap, dot11 := packets.Dot11Parse(packet); ok {
 				// check FCS checksum
-				if mod.skipBroken && !dot11.ChecksumValid() {
-					mod.Debug("skipping dot11 packet with invalid checksum.")
-					continue
-				}
+				//if mod.skipBroken && !dot11.ChecksumValid() {
+				//	mod.Debug("skipping dot11 packet with invalid checksum.")
+				//	continue
+				//}
 
 				mod.discoverProbes(radiotap, dot11, packet)
 				mod.discoverAccessPoints(radiotap, dot11, packet)
