@@ -266,7 +266,7 @@ func (w *NgWriter) AddInterface(intf NgInterface) (id int, err error) {
 	id = int(w.intf)
 	w.intf++
 
-	var scratch [14]ngOption
+	var scratch [7]ngOption
 	i := 0
 	if intf.Name != "" {
 		scratch[i].code = ngOptionCodeInterfaceName
