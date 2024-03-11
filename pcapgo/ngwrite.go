@@ -278,21 +278,6 @@ func (w *NgWriter) AddInterface(intf NgInterface) (id int, err error) {
 		scratch[i].raw = intf.Comment
 		i++
 	}
-	if intf.Ipv4address != "" {
-		scratch[i].code = ngOptionCodeInterfaceIPV4Address
-		scratch[i].raw = intf.Ipv4address
-		i++
-	}
-	if intf.Ipv6address != "" {
-		scratch[i].code = ngOptionCodeInterfaceIPV6Address
-		scratch[i].raw = intf.Ipv6address
-		i++
-	}
-	if intf.MACaddress != "" {
-		scratch[i].code = ngOptionCodeInterfaceMACAddress
-		scratch[i].raw = intf.MACaddress
-		i++
-	}
 	if intf.Description != "" {
 		scratch[i].code = ngOptionCodeInterfaceDescription
 		scratch[i].raw = intf.Description

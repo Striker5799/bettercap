@@ -2,11 +2,11 @@
 
 // Copyright (c) 2012 Google, Inc. All rights reserved.
 // Copyright (c) 2009-2011 Andreas Krennmair. All rights reserved.
-//
+// 
 // Redistribution and use in source and binary forms, with or without
 // modification, are permitted provided that the following conditions are
 // met:
-//
+// 
 //    * Redistributions of source code must retain the above copyright
 // notice, this list of conditions and the following disclaimer.
 //    * Redistributions in binary form must reproduce the above
@@ -16,7 +16,7 @@
 //    * Neither the name of Andreas Krennmair, Google, nor the names of its
 // contributors may be used to endorse or promote products derived from
 // this software without specific prior written permission.
-//
+// 
 // THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS
 // "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT
 // LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR
@@ -197,15 +197,9 @@ type NgInterface struct {
 	OS string
 	// LinkType is the linktype of the interface.
 	LinkType layers.LinkType
-	// IPV4 Address is the interface's IP
-	Ipv4address string
-	// IPV6 Address is the interface's IP
-	Ipv6address string
-	// MAC Address is the interface's MAC
-	MACaddress string
 	// TimestampResolution is the timestamp resolution of the packets in the pcapng file belonging to this interface.
 	TimestampResolution NgResolution
-	// TimestampOffset is the timestamp offset in seconds of the packets in the pcapng file belonging to this interface.
+	// TimestampResolution is the timestamp offset in seconds of the packets in the pcapng file belonging to this interface.
 	TimestampOffset uint64
 	// SnapLength is the maximum packet length captured by this interface. 0 for unlimited
 	SnapLength uint32
