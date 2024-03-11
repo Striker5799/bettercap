@@ -237,8 +237,13 @@ func (w *WiFi) SaveHandshakesTo(fileName string, linkType layers.LinkType) error
 
 	// Set default interface name and linkType
 	NgIface := pcapgo.NgInterface{
-		Name:                w.iface.Name(),
+		Name: w.iface.Name(),
+		//Comment:             "Raspberry Pi",
+		//Description:         "Broadcom",
 		LinkType:            linkType,
+		IPv4:                w.iface.IpAddress,
+		IPv6:                w.iface.Ip6Address,
+		MACaddress:          w.iface.HwAddress,
 		OS:                  runtime.GOOS,
 		SnapLength:          0, //unlimited
 		TimestampResolution: 9,
